@@ -1,7 +1,7 @@
 # csc413-SecondGame
 
-## Student Name  :
-## Student ID    :
+## Student Name  : Matt Bolles
+## Student ID    : 913249017
 
 
 ## src folder is to be used to store source code only.
