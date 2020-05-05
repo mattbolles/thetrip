@@ -3,6 +3,9 @@ package com.secondgame;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.badlogic.gdx.ApplicationAdapter;
 
 public class TiledMap extends Map {
 
@@ -36,21 +39,37 @@ public class TiledMap extends Map {
 
     @Override
     public TileType getTileTypeByCoordinate(int layer, int col, int row) {
+        TiledMapTileLayer currentLayer = (TiledMapTileLayer) tiledMap.getLayers().get(layer);
+        Cell currentCell = currentLayer.getCell(col, row);
+
+        if (currentCell != null) {
+            TiledMapTile currentTile = currentCell.getTile();
+
+            if (currentTile != null) {
+                // return current tile type
+                return TileType.getTileType(currentTile.getId());
+            }
+        }
         return null;
     }
 
     @Override
     public int getWidth() {
-        return 0;
+        // return width of current tile
+        TiledMapTileLayer currentLayer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
+        return currentLayer.getWidth();
     }
 
     @Override
     public int getHeight() {
-        return 0;
+        // return height of current tile
+        TiledMapTileLayer currentLayer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
+        return currentLayer.getHeight();
     }
 
     @Override
     public int getLayers() {
-        return 0;
+        // return amount of layers
+        return tiledMap.getLayers().getCount();
     }
 }

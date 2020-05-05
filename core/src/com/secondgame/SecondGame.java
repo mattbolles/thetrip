@@ -30,6 +30,13 @@ public class SecondGame extends ApplicationAdapter {
 		/*batch.begin();
 		batch.draw(img, 0, 0);
 		batch.end();*/
+
+		// if clicked
+		if (Gdx.input.isTouched()) {
+			// drag map
+			camera.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
+			camera.update();
+		}
 		gameMap.render(camera);
 	}
 	
