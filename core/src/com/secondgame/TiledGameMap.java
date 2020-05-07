@@ -1,35 +1,42 @@
 package com.secondgame;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
-import com.badlogic.gdx.ApplicationAdapter;
 
-public class TiledMap extends Map {
+public class TiledGameMap extends GameMap {
 
     com.badlogic.gdx.maps.tiled.TiledMap tiledMap;
     OrthogonalTiledMapRenderer tiledMapRenderer;
 
     //init
-    public TiledMap() {
+    public TiledGameMap() {
         tiledMap = new TmxMapLoader().load("testmap.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
 
     @Override
-    public void render(OrthographicCamera camera) {
+    public void render(OrthographicCamera camera, SpriteBatch spriteBatch) {
         //tell what camera to use
         tiledMapRenderer.setView(camera);
+        // render gameMap
         tiledMapRenderer.render();
+        // render according to camera
+        spriteBatch.setProjectionMatrix(camera.combined);
+        // render game objects
+        spriteBatch.begin();
+        super.render(camera, spriteBatch);
+        spriteBatch.end();
 
     }
 
     @Override
     public void update(float delta) {
-
+        super.update(delta);
     }
 
     @Override
