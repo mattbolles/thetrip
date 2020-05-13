@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
-public class SecondGame extends ApplicationAdapter {
+public class Game extends ApplicationAdapter {
 	SpriteBatch spriteBatch;
 	OrthographicCamera camera;
 	GameMap gameMap;

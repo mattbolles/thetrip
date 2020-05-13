@@ -6,6 +6,8 @@ import java.util.HashMap;
 
 public class GameObjectState {
 
+    // add saving states later if necessary
+
     public String gameObjectType;
     public float x, y;
     public HashMap<String, String> gameObjectData;
