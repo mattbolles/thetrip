@@ -21,15 +21,27 @@ public class GameObjectLoader {
             ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
             for (GameObjectState gameObjectState : gameObjectStates) {
                 gameObjects.add(GameObjectType.createObjectFromState(gameObjectState, gameMap));
-
             }
             return gameObjects;
         }
 
         else {
+            //saveGameObjects(id, currentGameObjects);
             Gdx.app.error("GameObjectLoader", "Could not load game objects :(");
+            //return currentGameObjects;
             return null;
         }
 
+    }
+
+    public static void saveGameObjects(String id, ArrayList<GameObject> gameObjects) {
+        ArrayList<GameObjectState> gameObjectStates = new ArrayList<GameObjectState>();
+        for (GameObject gameObject : gameObjects) {
+            gameObjectStates.add(gameObject.getSaveGameObjectState());
+        }
+
+        Gdx.files.local("maps/").file().mkdirs();
+        FileHandle file = Gdx.files.local("maps/" + id + ".gameObjects");
+        file.writeString(json.prettyPrint(gameObjectStates), false);
     }
 }

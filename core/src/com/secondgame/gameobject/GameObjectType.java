@@ -14,8 +14,8 @@ public enum GameObjectType {
     PLAYER("player", Player.class, 30, 64, 40);
 
     private String id;
-    private Class<? extends GameObject> loaderClass;
-    //private Class loaderClass;
+    //private Class<? extends GameObject> loaderClass;
+    private Class loaderClass;
     private int width;
     private int height;
     private float weight;
@@ -49,7 +49,7 @@ public enum GameObjectType {
         GameObjectType gameObjectType = gameObjectTypes.get(gameObjectState.gameObjectType);
         try {
             @SuppressWarnings("unchecked")
-            GameObject newGameObject = ClassReflection.newInstance(gameObjectType.loaderClass);
+            GameObject newGameObject = (GameObject) ClassReflection.newInstance(gameObjectType.loaderClass);
             newGameObject.create(gameObjectState, gameObjectType, gameMap);
             return newGameObject;
         }
@@ -64,7 +64,7 @@ public enum GameObjectType {
 
     static {
         gameObjectTypes = new HashMap<String, GameObjectType>();
-        for (GameObjectType gameObjectType : gameObjectTypes.values()) {
+        for (GameObjectType gameObjectType : GameObjectType.values()) {
             gameObjectTypes.put(gameObjectType.id, gameObjectType);
         }
     }
