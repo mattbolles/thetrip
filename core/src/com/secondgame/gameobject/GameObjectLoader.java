@@ -13,7 +13,7 @@ public class GameObjectLoader {
     private static Json json = new Json();
 
     public static ArrayList<GameObject> loadGameObjectsIntoMap(String id, GameMap gameMap) {
-        Gdx.files.internal(id + "json");
+        Gdx.files.internal(id + ".json");
         FileHandle file = Gdx.files.internal(id + ".json");
 
         if (file.exists()) {

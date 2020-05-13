@@ -14,7 +14,7 @@ public abstract class GameMap {
 
     public GameMap() {
         gameObjects = new ArrayList<GameObject>();
-        gameObjects.addAll(GameObjectLoader.loadGameObjectsIntoMap("gameObjects", this));
+        gameObjects.addAll(GameObjectLoader.loadGameObjectsIntoMap("gameObjectStates", this));
 
     }
 

@@ -8,7 +8,7 @@ public class GameObjectState {
 
     public String gameObjectType;
     public float x, y;
-    public HashMap<String, String> objectData;
+    public HashMap<String, String> gameObjectData;
 
     public GameObjectState() {
 
@@ -45,25 +45,25 @@ public class GameObjectState {
     }
 
     public void addFloatToHashMap(String key, float valueToAdd) {
-        objectData.put(key, "" + valueToAdd);
+        gameObjectData.put(key, "" + valueToAdd);
     }
 
     public void addIntToHashMap(String key, int valueToAdd) {
-        objectData.put(key, "" + valueToAdd);
+        gameObjectData.put(key, "" + valueToAdd);
     }
 
     public void addBooleanToHashMap(String key, boolean valueToAdd) {
-        objectData.put(key, "" + valueToAdd);
+        gameObjectData.put(key, "" + valueToAdd);
     }
 
     public void addStringToHashMap(String key, String valueToAdd) {
-        objectData.put(key, "" + valueToAdd);
+        gameObjectData.put(key, "" + valueToAdd);
     }
 
     public float getFloatFromHashMap(String key, float defaultValue) {
-        if (objectData.containsKey(key)) {
+        if (gameObjectData.containsKey(key)) {
             try {
-                return Float.parseFloat(objectData.get(key));
+                return Float.parseFloat(gameObjectData.get(key));
             }
             // if wrong type of data return default value
             catch (Exception exception) {
@@ -76,9 +76,9 @@ public class GameObjectState {
     }
 
     public int getIntFromHashMap(String key, int defaultValue) {
-        if (objectData.containsKey(key)) {
+        if (gameObjectData.containsKey(key)) {
             try {
-                return Integer.parseInt(objectData.get(key));
+                return Integer.parseInt(gameObjectData.get(key));
             }
             // if wrong type of data return default value
             catch (Exception exception) {
@@ -91,9 +91,9 @@ public class GameObjectState {
     }
 
     public boolean getBooleanFromHashMap(String key, boolean defaultValue) {
-        if (objectData.containsKey(key)) {
+        if (gameObjectData.containsKey(key)) {
             try {
-                return Boolean.parseBoolean(objectData.get(key));
+                return Boolean.parseBoolean(gameObjectData.get(key));
             }
             // if wrong type of data return default value
             catch (Exception exception) {
@@ -106,8 +106,8 @@ public class GameObjectState {
     }
 
     public String getStringFromHashMap(String key, String defaultValue) {
-        if (objectData.containsKey(key)) {
-            return objectData.get(key);
+        if (gameObjectData.containsKey(key)) {
+            return gameObjectData.get(key);
         }
 
         else {
