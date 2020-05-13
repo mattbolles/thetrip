@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.secondgame.GameMap;
 
+import java.util.HashMap;
+
 public abstract class GameObject {
     protected Vector2 position;
     protected GameObjectType gameObjectType;
@@ -11,8 +13,14 @@ public abstract class GameObject {
     protected GameMap gameMap;
     protected boolean onGround = false;
 
-    public GameObject(float x, float y, GameObjectType gameObjectType, GameMap gameMap) {
+    /*public GameObject(float x, float y, GameObjectType gameObjectType, GameMap gameMap) {
         this.position = new Vector2(x, y);
+        this.gameObjectType = gameObjectType;
+        this.gameMap = gameMap;
+    }*/
+
+    public void create(GameObjectState gameObjectState, GameObjectType gameObjectType, GameMap gameMap) {
+        this.position = new Vector2(gameObjectState.getX(), gameObjectState.getY());
         this.gameObjectType = gameObjectType;
         this.gameMap = gameMap;
     }
@@ -53,6 +61,12 @@ public abstract class GameObject {
             this.position.x = newXPosition;
         }
     }
+
+    //save states of object
+    public GameObjectState getSaveGameObjectState() {
+        return new GameObjectState(gameObjectType.getId(), position.x, position.y);
+    }
+
     public Vector2 getPosition() {
         return position;
     }

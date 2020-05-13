@@ -3,6 +3,7 @@ package com.secondgame;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.secondgame.gameobject.GameObject;
+import com.secondgame.gameobject.GameObjectLoader;
 import com.secondgame.gameobject.Player;
 
 import java.util.ArrayList;
@@ -13,7 +14,8 @@ public abstract class GameMap {
 
     public GameMap() {
         gameObjects = new ArrayList<GameObject>();
-        gameObjects.add(new Player(40, 300, this));
+        gameObjects.addAll(GameObjectLoader.loadGameObjectsIntoMap("gameObjects", this));
+
     }
 
     public void render(OrthographicCamera camera, SpriteBatch spriteBatch) {

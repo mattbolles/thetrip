@@ -14,9 +14,16 @@ public class Player extends GameObject {
     Texture playerImage;
 
 
-    public Player(float x, float y, GameMap gameMap) {
+    /*public Player(float x, float y, GameMap gameMap) {
         super(x, y, GameObjectType.PLAYER, gameMap);
         playerImage = new Texture("images/player.png");
+    }*/
+
+    @Override
+    public void create(GameObjectState gameObjectState, GameObjectType gameObjectType, GameMap gameMap) {
+        super.create(gameObjectState, gameObjectType, gameMap);
+        playerImage = new Texture("images/player.png");
+        // add extra data... spawnradius etc
     }
 
     @Override
@@ -51,5 +58,12 @@ public class Player extends GameObject {
     public void render(SpriteBatch batch) {
         // last two fields scale image if not correct size
         batch.draw(playerImage, position.x, position.y, getWidth(), getHeight());
+    }
+
+    @Override
+    public GameObjectState getSaveGameObjectState() {
+        GameObjectState gameObjectState = super.getSaveGameObjectState();
+        //update extra data here if needed
+        return gameObjectState;
     }
 }
