@@ -55,7 +55,7 @@ public enum GameObjectType {
         }
 
         catch (ReflectionException exception) {
-            Gdx.app.error("Game Object Loader", "Could not load game object of type " + gameObjectType.id);
+            Gdx.app.error("SecondGame Object Loader", "Could not load game object of type " + gameObjectType.id);
             return null;
         }
     }
