@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Level2Screen extends ScreenAdapter {
 
-    SecondGame game;
+    private SecondGame game;
 
     float circleX = 300;
     float circleY = 150;

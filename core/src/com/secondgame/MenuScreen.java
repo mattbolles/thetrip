@@ -6,16 +6,17 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 
-public class EndScreen extends ScreenAdapter {
+public class MenuScreen extends ScreenAdapter {
 
-    SecondGame game;
+    private SecondGame game;
 
-    public EndScreen(SecondGame game) {
+    public MenuScreen(SecondGame game) {
         this.game = game;
     }
 
     @Override
     public void show() {
+
     }
 
     @Override

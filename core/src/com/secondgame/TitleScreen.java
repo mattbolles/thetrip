@@ -8,23 +8,14 @@ import com.badlogic.gdx.graphics.GL20;
 
 public class TitleScreen extends ScreenAdapter {
 
-    SecondGame game;
+    private SecondGame game;
 
     public TitleScreen(SecondGame game) {
-        this.game = game;
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean keyDown ( int keyCode){
-                if (keyCode == Input.Keys.ENTER) {
-                    game.setScreen(new Level1Screen(game));
-                }
-                return true;
-            }
-        });
+
     }
 
     @Override
