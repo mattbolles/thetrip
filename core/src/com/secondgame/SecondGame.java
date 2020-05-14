@@ -8,6 +8,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 //main class that initializes and loads everything
 public class SecondGame extends Game {
 
+	private LoadingScreen loadingScreen;
+	private IntroScreen introScreen;
+	private OptionsScreen optionsScreen;
+	private TitleScreen titleScreen;
+	private Level1Screen level1Screen;
+	private Level2Screen level2Screen;
+	private Level3Screen level3Screen;
+
 	SpriteBatch batch;
 	ShapeRenderer shapeRenderer;
 	BitmapFont font;
