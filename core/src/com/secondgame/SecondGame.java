@@ -30,10 +30,11 @@ public class SecondGame extends Game {
 
     @Override
     public void dispose() {
-        batch.dispose();
-        shapeRenderer.dispose();
-        font.dispose();
+
     }
+
+
+
 
     public void loadScreen(String screenToDisplay) {
         switch(screenToDisplay) {

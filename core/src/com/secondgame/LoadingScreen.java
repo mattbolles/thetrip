@@ -8,4 +8,9 @@ public class LoadingScreen extends ScreenAdapter {
     public LoadingScreen(SecondGame game) {
         this.game = game;
     }
+
+    @Override
+    public void render(float delta) {
+        game.loadScreen(GameState.MENU);
+    }
 }
