@@ -26,10 +26,11 @@ public class MenuScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
         // create and show menu
         Table menu =  new Table();
         menu.setFillParent(true);
-        menu.setDebug(true);
+        //menu.setDebug(true);
         stage.addActor(menu);
         // creat and show menu buttons
         // create custom skin later

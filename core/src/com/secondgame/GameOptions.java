@@ -4,10 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 public class GameOptions {
-    private static final String STARTING_LEVEL = "1";
+    private static final String STARTING_LEVEL = "startingLevel";
     private static final String MUSIC_VOLUME = "volume";
     private static final String MUSIC_ENABLED = "music.enabled";
-    private static final String OPTIONS_NAME = "options";
+    private static final String OPTIONS_NAME = "theTripOptions";
 
     protected Preferences getOptions() {
         return Gdx.app.getPreferences(OPTIONS_NAME);
@@ -24,7 +24,7 @@ public class GameOptions {
     }
 
     public float getMusicVolume() {
-        return getOptions().getFloat(MUSIC_VOLUME, 0.5f);
+        return getOptions().getFloat(MUSIC_VOLUME, 1f);
     }
 
     public void setMusicVolume(float volumeToSet) {
