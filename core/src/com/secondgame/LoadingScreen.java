@@ -11,6 +11,7 @@ public class LoadingScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+        System.out.println("loading...");
         game.loadScreen(GameState.MENU);
     }
 }

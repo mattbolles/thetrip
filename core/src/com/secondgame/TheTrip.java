@@ -1,66 +1,56 @@
 package com.secondgame;
 
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class Level1Screen extends ScreenAdapter {
-
-    private SecondGame game;
-    private TiledGameMap map;
+public class TheTrip extends ApplicationAdapter {
     SpriteBatch spriteBatch;
     OrthographicCamera camera;
+    GameMap gameMap;
     float deltaX;
     float deltaY;
-    float width;
-    float height;
-    private Stage stage;
+    SecondGame game;
+    int selectedLevel;
 
-
-    public Level1Screen(SecondGame game) {
+    public TheTrip(SecondGame game) {
         this.game = game;
-        map = new TiledGameMap(1);
+    }
+
+    @Override
+    public void create () {
         spriteBatch = new SpriteBatch();
         float width = Gdx.graphics.getWidth();
         float height = Gdx.graphics.getHeight();
-        /*camera = new OrthographicCamera();
-        camera.setToOrtho(false, width, height);*/
-        stage = new Stage(new ScreenViewport());
-    }
-
-
-
-    // this will be called whens screen called for first time
-    @Override
-    public void show() {
-        stage.clear();
-        //camera.update();
-        Gdx.input.setInputProcessor(stage);
-
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.update();
+        selectedLevel = game.getOptions().getStartingLevel();
+        gameMap = new TiledGameMap(selectedLevel);
     }
 
     @Override
-    public void render(float delta) {
+    public void render () {
+
         Gdx.gl.glClearColor(0, 256, 100, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.draw();
 
+        // if clicked
+        if (Gdx.input.isTouched()) {
+            // drag gameMap
+            camera.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
+            camera.update();
+        }
 
         // if clicked - after click finished
         if (Gdx.input.justTouched()) {
             Vector3 clickPositionOnScreen = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             Vector3 clickPositionOnMap = camera.unproject(clickPositionOnScreen);
-            TileType currentTileType = map.getTileTypeByLocation(1, clickPositionOnMap.x, clickPositionOnMap.y);
+            TileType currentTileType = gameMap.getTileTypeByLocation(1, clickPositionOnMap.x, clickPositionOnMap.y);
             System.out.println(currentTileType == null);
             if (currentTileType != null) {
                 System.out.println("Click on tile id: " + currentTileType.getId() + " name: " + currentTileType.getName() + " is collidable: " + currentTileType.isCollidable() + " damage: " + currentTileType.getDamage());
@@ -70,12 +60,13 @@ public class Level1Screen extends ScreenAdapter {
         }
         camera.update();
         // deltatime is time between last update and now
-        map.update(Gdx.graphics.getDeltaTime());
-        map.render(camera, spriteBatch);
+        gameMap.update(Gdx.graphics.getDeltaTime());
+        gameMap.render(camera, spriteBatch);
     }
 
     @Override
-    public void hide() {
-        Gdx.input.setInputProcessor(null);
+    public void dispose () {
+        spriteBatch.dispose();
+        gameMap.dispose();
     }
 }

@@ -5,10 +5,10 @@ import java.util.HashMap;
 public enum TileType {
 
     // change IDs later when fixed, got messed up in Tiled somehow
-    GRASS(5, true, "grass"),
-    DIRT(6, true, "dirt"),
-    BLOCK_PURPLE(7, true, "blockpurple"),
-    SKY_PURPLE(8, false, "skypurple");
+    GRASS(1, true, "grass"),
+    DIRT(2, true, "dirt"),
+    BLOCK_PURPLE(3, true, "blockpurple"),
+    SKY_PURPLE(0, false, "skypurple");
 
     public static final int TILE_SIZE = 32;
 

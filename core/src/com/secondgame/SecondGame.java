@@ -21,6 +21,7 @@ public class SecondGame extends Game {
     private EndScreen endScreen;
     private GameOverScreen gameOverScreen;
     private MenuScreen menuScreen;
+    private GameScreen gameScreen;
 
     SpriteBatch batch;
     ShapeRenderer shapeRenderer;
@@ -100,6 +101,14 @@ public class SecondGame extends Game {
                 }
                 this.setScreen(endScreen);
                 break;
+
+            case "gamescreen":
+                if (gameScreen == null) {
+                    gameScreen = new GameScreen(this);
+                }
+                this.setScreen(gameScreen);
+                break;
+
 
         }
     }

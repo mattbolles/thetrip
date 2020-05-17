@@ -7,14 +7,16 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 
+// generic class to make tiled game map
+
 public class TiledGameMap extends GameMap {
 
     com.badlogic.gdx.maps.tiled.TiledMap tiledMap;
     OrthogonalTiledMapRenderer tiledMapRenderer;
 
     //init
-    public TiledGameMap() {
-        tiledMap = new TmxMapLoader().load("testmap.tmx");
+    public TiledGameMap(int mapToLoad) {
+        tiledMap = new TmxMapLoader().load("maps/level" + mapToLoad + "/level" + mapToLoad + ".tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 

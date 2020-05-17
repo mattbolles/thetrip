@@ -10,4 +10,5 @@ public class GameState {
     public static final String LOADING = "loading";
     public static final String MENU = "menu";
     public static final String OPTIONS = "options";
+    public static final String GAME = "gamescreen";
 }
