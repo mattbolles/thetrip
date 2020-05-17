@@ -65,14 +65,14 @@ public class TiledGameMap extends GameMap {
     @Override
     public int getWidth() {
         // return width of current tile
-        TiledMapTileLayer currentLayer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
+        TiledMapTileLayer currentLayer = ((TiledMapTileLayer) tiledMap.getLayers().get(1));
         return currentLayer.getWidth();
     }
 
     @Override
     public int getHeight() {
         // return height of current tile
-        TiledMapTileLayer currentLayer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
+        TiledMapTileLayer currentLayer = ((TiledMapTileLayer) tiledMap.getLayers().get(1));
         return currentLayer.getHeight();
     }
 

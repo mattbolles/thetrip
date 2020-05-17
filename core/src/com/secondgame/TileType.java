@@ -8,7 +8,7 @@ public enum TileType {
     GRASS(1, true, "grass"),
     DIRT(2, true, "dirt"),
     BLOCK_PURPLE(3, true, "blockpurple"),
-    SKY_PURPLE(0, false, "skypurple");
+    SKY_PURPLE(0, true, "skypurple");
 
     public static final int TILE_SIZE = 32;
 

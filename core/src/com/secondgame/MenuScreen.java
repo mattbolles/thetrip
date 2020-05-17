@@ -1,15 +1,12 @@
 package com.secondgame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -27,10 +24,25 @@ public class MenuScreen extends ScreenAdapter {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+        // logo
+        Texture logoTexture = new Texture(Gdx.files.internal("images/logo.png"));
+        Image logo = new Image(logoTexture);
+        logo.setPosition(Gdx.graphics.getWidth() / 2 -logo.getWidth() / 2,
+                Gdx.graphics.getHeight() * 2 / 3 + logo.getHeight() / 3);
+
+        stage.addActor(logo);
+        // add my name
+        Label myName = new Label("by Matt Bolles", GameInfo.LABEL_STYLE_18);
+        myName.setPosition(Gdx.graphics.getWidth() / 2 - myName.getWidth() / 2,
+                logo.getY() - myName.getHeight() * 2);
+        stage.addActor(myName);
         // create and show menu
         Table menu =  new Table();
+
         menu.setFillParent(true);
         //menu.setDebug(true);
+        /*menu.setPosition(Gdx.graphics.getWidth() / 2 - menu.getWidth() / 2,
+                Gdx.graphics.getHeight() * 2 / 3 - menu.getHeight() / 2);*/
         stage.addActor(menu);
         // creat and show menu buttons
         // create custom skin later
@@ -39,6 +51,7 @@ public class MenuScreen extends ScreenAdapter {
         TextButton  optionsButton = new TextButton("Options", skin);
         TextButton exitButton = new TextButton("Exit", skin);
         // add buttons
+        menu.row().pad(50, 0, 0, 0);
         menu.add(startButton).fillX().uniformX(); // fill table width, align with other buttons
         menu.row().pad(10, 0, 0, 0); // add spacing to bottom of button
         menu.add(optionsButton).fillX().uniformX();

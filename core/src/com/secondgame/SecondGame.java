@@ -1,8 +1,10 @@
 package com.secondgame;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Preferences.*;
@@ -30,6 +32,7 @@ public class SecondGame extends Game {
     @Override
     public void create() {
         loadingScreen = new LoadingScreen(this);
+
         theTripOptions = new GameOptions();
         //setScreen(new LoadingScreen(this));
         setScreen(loadingScreen);
