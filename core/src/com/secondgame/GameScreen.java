@@ -21,14 +21,14 @@ public class GameScreen extends ScreenAdapter {
     GameMap gameMap;
     float deltaX;
     float deltaY;
-    Vector2 cameraPosition;
+    Vector2 newCameraPosition;
 
     public GameScreen(SecondGame game) {
         this.game = game;
         spriteBatch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cameraPosition = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        newCameraPosition = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
         stage = new Stage(new ScreenViewport(camera));
         camera.update();
@@ -76,20 +76,37 @@ public class GameScreen extends ScreenAdapter {
             }
         }
         // align camera with player object
-        /*for (GameObject gameObject : gameMap.gameObjects) {
+        for (GameObject gameObject : gameMap.gameObjects) {
             if (gameObject.isPlayer()) {
-                cameraPosition.set(getCameraX((Player) gameObject), getCameraY((Player) gameObject));
-                System.out.println(getCameraPosition());
-                //cameraPosition.set(gameObject.getCameraPosition());
-            }
-        };*/
+                System.out.println("player pos: " + gameObject.getPosition());
+                newCameraPosition.set(getCameraX((Player) gameObject), getCameraY((Player) gameObject));
+                System.out.println("new cam pos:" + newCameraPosition);
+                System.out.println("old cam pos:" + camera.position);
+                newCameraPosition.set(camera.position.x - newCameraPosition.x, camera.position.y + newCameraPosition.y);
+                if (gameObject.getPosition().x > camera.position.x) {
+                    camera.position.x = gameObject.getPosition().x;
+                }
 
-        //camera.translate(cameraPosition);
-        camera.update();
+                // reach left side
+                if (gameObject.getPosition().x < camera.position.x && (gameObject.getPosition().x > GameInfo.SCREEN_WIDTH / 2)) {
+                    camera.position.x = gameObject.getPosition().x;
+                }
+
+                //reach right side
+                if (camera.position.x > GameInfo.WORLD_WIDTH - GameInfo.SCREEN_WIDTH / 2) {
+                    camera.position.x = GameInfo.WORLD_WIDTH - GameInfo.SCREEN_WIDTH / 2;
+                }
+                //System.out.println(getNewCameraPosition());
+            }
+        };
+
+
 
         // deltatime is time between last update and now
         gameMap.update(Gdx.graphics.getDeltaTime());
         gameMap.render(camera, spriteBatch);
+        //camera.translate(newCameraPosition);
+        camera.update();
         //perform actions after input
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         // draw appropriate items
@@ -100,7 +117,7 @@ public class GameScreen extends ScreenAdapter {
     public float getCameraX(Player player) {
         // get 1st tank
         // divide by 4 as each player gets half the screen width originally
-        float cameraX = player.getX() - (GameInfo.SCREEN_WIDTH / 4);
+        float cameraX = camera.position.x - (GameInfo.SCREEN_WIDTH / 2);
         if (cameraX > GameInfo.offsetMaxX) {
             cameraX = GameInfo.offsetMaxX;
         } else if (cameraX < GameInfo.offsetMinX) {
@@ -110,7 +127,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public float getCameraY(Player player) {
-        float cameraY = player.getY() - (GameInfo.SCREEN_HEIGHT / 2);
+        float cameraY = camera.position.y + (GameInfo.SCREEN_HEIGHT / 2);
         if (cameraY > GameInfo.offsetMaxY) {
             cameraY = GameInfo.offsetMaxY;
         } else if (cameraY < GameInfo.offsetMinY) {
@@ -119,7 +136,7 @@ public class GameScreen extends ScreenAdapter {
         return cameraY;
     }
 
-    public Vector2 getCameraPosition() {
-        return cameraPosition;
+    public Vector2 getNewCameraPosition() {
+        return newCameraPosition;
     }
 }

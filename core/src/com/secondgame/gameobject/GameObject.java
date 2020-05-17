@@ -98,4 +98,9 @@ public abstract class GameObject {
     public float getWeight() {
         return gameObjectType.getWeight();
     }
+
+    public boolean isPlayer() {
+        System.out.println("from isPlayer():" + this.gameObjectType.equals(GameObjectType.PLAYER));
+        return this.gameObjectType.equals(GameObjectType.PLAYER);
+    }
 }
