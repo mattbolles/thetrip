@@ -1,5 +1,6 @@
 package com.secondgame;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.loaders.SoundLoader;
@@ -40,7 +41,8 @@ public class GameScreen extends ScreenAdapter {
         this.game = game;
         spriteBatch = game.batch;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(false, GameInfo.SCREEN_WIDTH, GameInfo.SCREEN_HEIGHT);
         camera.update();
         soundPlayer = new SoundPlayer(game);
         playerPositionX = 40; // initial player position
@@ -77,14 +79,18 @@ public class GameScreen extends ScreenAdapter {
                 //System.out.println("old cam pos:" + camera.position);
                 //newCameraPosition.set(camera.position.x - newCameraPosition.x,
                 //camera.position.y + newCameraPosition.y);
-                if (gameObject.getPosition().x > camera.position.x) {
-                    camera.position.x = gameObject.getPosition().x;
+                playerPositionX = gameObject.getPosition().x;
+                playerPositionY = gameObject.getPosition().y;
+                System.out.println("player at: " + playerPositionX + ", " + playerPositionY);
+                System.out.println("camera at: " + camera.position.x + ", " + camera.position.y);
+                if (playerPositionX > camera.position.x) {
+                    camera.position.x = playerPositionX;
                     camera.update();
                 }
 
                 // reach left side
-                if (gameObject.getPosition().x < camera.position.x && (gameObject.getPosition().x > GameInfo.SCREEN_WIDTH / 2)) {
-                    camera.position.x = gameObject.getPosition().x;
+                if (playerPositionX < camera.position.x && (playerPositionX > GameInfo.SCREEN_WIDTH / 2)) {
+                    camera.position.x = playerPositionX;
                     camera.update();
                 }
 
@@ -93,8 +99,24 @@ public class GameScreen extends ScreenAdapter {
                     camera.position.x = GameInfo.WORLD_WIDTH - GameInfo.SCREEN_WIDTH / 2;
                     camera.update();
                 }
-                playerPositionX = gameObject.getPosition().x;
-                playerPositionY = gameObject.getPosition().y;
+
+                if (playerPositionY > camera.position.y) {
+                    camera.position.y = playerPositionY;
+                    camera.update();
+                }
+
+                if (playerPositionY < camera.position.y && playerPositionY > GameInfo.SCREEN_HEIGHT / 2) {
+                    camera.position.y = playerPositionY;
+                    camera.update();
+                }
+
+                if (camera.position.y > GameInfo.WORLD_HEIGHT - GameInfo.SCREEN_HEIGHT / 2) {
+                    camera.position.y = GameInfo.WORLD_HEIGHT - GameInfo.SCREEN_HEIGHT / 2;
+                    camera.update();
+                }
+
+
+
                 //System.out.println(getNewCameraPosition());
             }
         }
@@ -106,15 +128,15 @@ public class GameScreen extends ScreenAdapter {
        // System.out.println("FPS: " + 1/delta);
         // if clicked
         stateTime += delta;
-        if (Gdx.input.isTouched()) {
+        /*if (Gdx.input.isTouched()) {
             // drag gameMap
             camera.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
             camera.update();
-        }
+        }*/
 
         // if tiles not working properly check tile set and make sure tile IDs match the tile type class
         // if clicked - after click finished
-        if (Gdx.input.justTouched()) {
+        /*if (Gdx.input.justTouched()) {
             Vector3 clickPositionOnScreen = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             Vector3 clickPositionOnMap = camera.unproject(clickPositionOnScreen);
             // 0 = 1st layer as index starts at 0
@@ -125,7 +147,7 @@ public class GameScreen extends ScreenAdapter {
                 System.out.println("ass");
 
             }
-        }
+        }*/
 
 
 
