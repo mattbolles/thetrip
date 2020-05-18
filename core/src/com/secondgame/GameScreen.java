@@ -2,6 +2,7 @@ package com.secondgame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.loaders.SoundLoader;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -28,6 +29,8 @@ public class GameScreen extends ScreenAdapter {
     float playerPositionX;
     float playerPositionY;
     float stateTime;
+    SoundPlayer soundPlayer;
+    int level;
 
 
 
@@ -39,25 +42,26 @@ public class GameScreen extends ScreenAdapter {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
+        soundPlayer = new SoundPlayer(game);
         playerPositionX = 40; // initial player position
         playerPositionY = 320;
         //newCameraPosition = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //stage = new Stage(new ScreenViewport(camera), spriteBatch);
         //gameMap = new TiledGameMap(0);
         int movePosition = 2; // in middle, 0 and 1 is left, 3 and 4 is right
-
-        gameMap = new TiledGameMap(game.getOptions().getStartingLevel());
+        level = game.getOptions().getStartingLevel();
+        gameMap = new TiledGameMap(level);
 
     }
 
-    //create load stuff here
+    //this stuff only happens when screen is shown
     @Override
     public void show() {
         System.out.println("Start GameScreen show");
         //Gdx.input.setInputProcessor(stage);
         float width = Gdx.graphics.getWidth();
         float height = Gdx.graphics.getHeight();
-
+        soundPlayer.playMusic(level);
 
     }
 
@@ -153,5 +157,7 @@ public class GameScreen extends ScreenAdapter {
     public void dispose() {
         spriteBatch.dispose();
         gameMap.dispose();
+        soundPlayer.stopMusic();
+        super.dispose();
     }
 }
