@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.secondgame.GameInfo;
 import com.secondgame.GameMap;
 
@@ -24,6 +25,11 @@ public class Player extends GameObject {
     public static final int FRAME_ROWS = 2;
     float stateTime; // for tracking animation time
     String direction; // for keeping track of direction player is facing
+    float health;
+    int lives;
+    boolean completelyDead;
+    float spawnX;
+    float spawnY;
 
     /*public Player(float x, float y, GameMap gameMap) {
         super(x, y, GameObjectType.PLAYER, gameMap);
@@ -33,6 +39,8 @@ public class Player extends GameObject {
     @Override
     public void create(GameObjectState gameObjectState, GameObjectType gameObjectType, GameMap gameMap) {
         super.create(gameObjectState, gameObjectType, gameMap);
+        this.spawnX = 40;
+        this.spawnY = 320;
         direction = "right";
         playerImage = new Texture("images/player.png");
         moveAnimationSheet = new Texture(Gdx.files.internal("images/playerspritesheet.png"));
@@ -48,7 +56,10 @@ public class Player extends GameObject {
 
         rightAnimation = new Animation<TextureRegion>(GameInfo.ANIMATION_SPEED, moveRightFrames);
         leftAnimation = new Animation<TextureRegion>(GameInfo.ANIMATION_SPEED, moveLeftFrames);
-
+        health = gameObjectState.getFloatFromHashMap("health", 100);
+        lives = gameObjectState.getIntFromHashMap("lives", 3);
+        completelyDead = false;
+        System.out.println("player health init: " + health);
         // add extra data... spawnradius etc
     }
 
@@ -93,6 +104,53 @@ public class Player extends GameObject {
             moveX(speed * deltaTime);
             direction = "right";
         }
+
+        if (lives == 0) {
+            completelyDead = true;
+        }
+        //System.out.println("player health: " + health);
+    }
+
+    public boolean isCompletelyDead() {
+        //resetPlayer();
+        return completelyDead;
+    }
+
+    public void respawnPlayer() {
+        this.health = 100;
+        //this.position.set(spawnX, spawnY);
+    }
+
+    public void revivePlayer() {
+        this.health = 100;
+        this.lives = 3;
+        //this.position.set(spawnX, spawnY);
+    }
+
+    public void damagePlayer(float amountToDamage) {
+        if (this.health > 0) {
+            this.health -= amountToDamage;
+        }
+    }
+
+    public void killPlayer() {
+        System.out.println("from Player: going to kill. Health: " + health + " lives: " + lives);
+        if (this.lives > 0) {
+            this.lives -= 1;
+        }
+        System.out.println("from Player: player killed. Health: " + health + health + " lives: " + lives);
+        this.setX(spawnX);
+        this.setY(spawnY);
+        this.health = 100;
+        //respawnPlayer();
+    }
+
+    public float getHealth() {
+        return this.health;
+    }
+
+    public int getLives() {
+        return this.lives;
     }
 
     @Override
@@ -105,6 +163,9 @@ public class Player extends GameObject {
 
         else if ("right".equals(direction)) {
             currentFrame = rightAnimation.getKeyFrame(stateTime, true);
+        }
+        if (this.health <= 0) {
+            killPlayer();
         }
         // last two fields scale image if not correct size
         batch.draw(currentFrame, position.x, position.y, getWidth(), getHeight());

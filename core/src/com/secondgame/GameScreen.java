@@ -27,11 +27,16 @@ public class GameScreen extends ScreenAdapter {
     float deltaX;
     float deltaY;
     Vector2 newCameraPosition;
+    Vector3 initialCameraPosition;
     float playerPositionX;
     float playerPositionY;
+    float spawnX;
+    float spawnY;
     float stateTime;
     SoundPlayer soundPlayer;
     int level;
+    float playerHealth;
+    int playerLives;
 
 
 
@@ -44,9 +49,12 @@ public class GameScreen extends ScreenAdapter {
         //camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, GameInfo.SCREEN_WIDTH, GameInfo.SCREEN_HEIGHT);
         camera.update();
+        initialCameraPosition = camera.position;
         soundPlayer = new SoundPlayer(game);
         playerPositionX = 40; // initial player position
         playerPositionY = 320;
+        spawnX = 40;
+        spawnY = 320;
         //newCameraPosition = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //stage = new Stage(new ScreenViewport(camera), spriteBatch);
         //gameMap = new TiledGameMap(0);
@@ -70,9 +78,12 @@ public class GameScreen extends ScreenAdapter {
     //basically the game loop
     @Override
     public void render(float delta) {
-        // align camera with player object
+        // update in relation to player object
         for (GameObject gameObject : gameMap.gameObjects) {
-            if (gameObject.isPlayer()) {
+            // align camera with player object
+            if (gameObject instanceof Player) {
+                playerHealth = ((Player) gameObject).getHealth();
+                playerLives = ((Player) gameObject).getLives();
                 //System.out.println("player pos: " + gameObject.getPosition());
                 //newCameraPosition.set(getCameraX((Player) gameObject), getCameraY((Player) gameObject));
                 //System.out.println("new cam pos:" + newCameraPosition);
@@ -81,8 +92,8 @@ public class GameScreen extends ScreenAdapter {
                 //camera.position.y + newCameraPosition.y);
                 playerPositionX = gameObject.getPosition().x;
                 playerPositionY = gameObject.getPosition().y;
-                System.out.println("player at: " + playerPositionX + ", " + playerPositionY);
-                System.out.println("camera at: " + camera.position.x + ", " + camera.position.y);
+                //System.out.println("player at: " + playerPositionX + ", " + playerPositionY);
+                //System.out.println("camera at: " + camera.position.x + ", " + camera.position.y);
                 if (playerPositionX > camera.position.x) {
                     camera.position.x = playerPositionX;
                     camera.update();
@@ -115,6 +126,17 @@ public class GameScreen extends ScreenAdapter {
                     camera.update();
                 }
 
+                // reset camera upon player death if player not completely dead
+                if (playerHealth == 0 && !((Player) gameObject).isCompletelyDead()) {
+                    System.out.println("init camera position: " + initialCameraPosition.x + ", " + initialCameraPosition.y);
+                    camera.position.x = initialCameraPosition.x;
+                    camera.position.y = initialCameraPosition.y;
+                }
+
+                if (((Player) gameObject).isCompletelyDead() ) {
+                    game.loadScreen(GameState.GAME_OVER);
+                    ((Player) gameObject).revivePlayer();
+                }
 
 
                 //System.out.println(getNewCameraPosition());
@@ -128,15 +150,15 @@ public class GameScreen extends ScreenAdapter {
        // System.out.println("FPS: " + 1/delta);
         // if clicked
         stateTime += delta;
-        /*if (Gdx.input.isTouched()) {
+        if (Gdx.input.isTouched()) {
             // drag gameMap
             camera.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
             camera.update();
-        }*/
+        }
 
         // if tiles not working properly check tile set and make sure tile IDs match the tile type class
         // if clicked - after click finished
-        /*if (Gdx.input.justTouched()) {
+        if (Gdx.input.justTouched()) {
             Vector3 clickPositionOnScreen = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             Vector3 clickPositionOnMap = camera.unproject(clickPositionOnScreen);
             // 0 = 1st layer as index starts at 0
@@ -144,10 +166,9 @@ public class GameScreen extends ScreenAdapter {
             System.out.println(currentTileType == null);
             if (currentTileType != null) {
                 System.out.println("Click on tile id: " + currentTileType.getId() + " name: " + currentTileType.getName() + " is collidable: " + currentTileType.isCollidable() + " damage: " + currentTileType.getDamage());
-                System.out.println("ass");
 
             }
-        }*/
+        }
 
 
 

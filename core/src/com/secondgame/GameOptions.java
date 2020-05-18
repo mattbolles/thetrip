@@ -8,6 +8,7 @@ public class GameOptions {
     private static final String MUSIC_VOLUME = "volume";
     private static final String MUSIC_ENABLED = "music.enabled";
     private static final String OPTIONS_NAME = "theTripOptions";
+    private static final String PLAYER_LIVES = "lives";
 
     protected Preferences getOptions() {
         return Gdx.app.getPreferences(OPTIONS_NAME);
@@ -40,5 +41,16 @@ public class GameOptions {
         getOptions().putInteger(STARTING_LEVEL, levelToStartOn);
         getOptions().flush();
     }
+
+    public int getPlayerLives() {
+        return getOptions().getInteger(PLAYER_LIVES, 3);
+    }
+
+    public void setPlayerLives(int lives) {
+        getOptions().putInteger(PLAYER_LIVES, lives);
+        getOptions().flush();
+    }
+
+
 
 }

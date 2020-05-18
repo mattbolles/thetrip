@@ -3,6 +3,7 @@ package com.secondgame.gameobject;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.secondgame.GameMap;
+import com.secondgame.TileType;
 
 import java.util.HashMap;
 
@@ -42,6 +43,19 @@ public abstract class GameObject {
             }
             // reset velocity
             this.velocityY = 0;
+
+            // check if damages player
+            if ((gameMap.getTileTypeByLocation(1, position.x, newYPosition)) != null) {
+                TileType collidingTileType = gameMap.getTileTypeByLocation(1, position.x, newYPosition);
+                if (collidingTileType.doesKill()) {
+                    System.out.println("from GameObject: colliding with deadly tile of type " + collidingTileType);
+                    if (this instanceof Player) {
+                        ((Player) this).damagePlayer(20);
+                    }
+                }
+            }
+
+
         }
 
         // if no collision with map
@@ -79,8 +93,16 @@ public abstract class GameObject {
         return position.x;
     }
 
+    public void setX(float xToSet) {
+        this.position.x = xToSet;
+    }
+
     public float getY() {
         return position.y;
+    }
+
+    public void setY(float yToSet) {
+        this.position.y = yToSet;
     }
 
     public boolean isOnGround() {
@@ -103,4 +125,8 @@ public abstract class GameObject {
         //System.out.println("from isPlayer():" + this.gameObjectType.equals(GameObjectType.PLAYER));
         return this.gameObjectType.equals(GameObjectType.PLAYER);
     }
+
+  /*  public abstract boolean isCompletelyDead();
+
+    public abstract boolean killPlayer();*/
 }

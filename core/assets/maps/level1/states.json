@@ -3,6 +3,9 @@
     "gameObjectType": "player",
     "x": 40,
     "y": 320,
-    "gameObjectData": {}
+    "gameObjectData": {
+      "health": 100,
+      "lives": 3
+    }
   }
 ]
