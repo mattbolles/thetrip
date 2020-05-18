@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.secondgame.gameobject.GameObject;
 import com.secondgame.gameobject.Player;
 
@@ -37,6 +38,8 @@ public class GameScreen extends ScreenAdapter {
     int level;
     float playerHealth;
     int playerLives;
+    private Hud hud;
+    private Viewport viewport;
 
 
 
@@ -45,6 +48,7 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(final SecondGame game) {
         this.game = game;
         spriteBatch = game.batch;
+        hud = new Hud(spriteBatch);
         camera = new OrthographicCamera();
         //camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, GameInfo.SCREEN_WIDTH, GameInfo.SCREEN_HEIGHT);
@@ -147,6 +151,8 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         // fill screen with color
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+
        // System.out.println("FPS: " + 1/delta);
         // if clicked
         stateTime += delta;
@@ -175,12 +181,15 @@ public class GameScreen extends ScreenAdapter {
 
         // deltatime is time between last update and now
         camera.update();
-        spriteBatch.setProjectionMatrix(camera.combined);
+
+        //spriteBatch.setProjectionMatrix(camera.combined);
         /*spriteBatch.draw(moveAnimation[movePosition].getKeyFrame(stateTime, true), playerPositionX,
                 playerPositionY,
                 GameInfo.PLAYER_WIDTH * 3, GameInfo.PLAYER_HEIGHT * 3);*/
 
         //spriteBatch.setProjectionMatrix(camera.combined);
+        spriteBatch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
         gameMap.update(Gdx.graphics.getDeltaTime());
         gameMap.render(camera, spriteBatch);
         //camera.translate(newCameraPosition);
