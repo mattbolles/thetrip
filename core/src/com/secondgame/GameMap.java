@@ -74,9 +74,10 @@ public abstract class GameMap {
             for (int column = firstTileY; column < lastTileY; column++) {
                 // go through each layer
                 for (int layer = 0; layer < getLayers(); layer++) {
-                    System.out.println("from GameMap, checkIfCollides, layer " + layer + " row " + row + " col " + column);
+                    //System.out.println("from GameMap, checkIfCollides, layer " + layer + " row " + row + " col " +
+                    // column);
                     TileType currentTileType = getTileTypeByCoordinate(layer, column, row);
-                    System.out.println("from GameMap, checkIfCollides, currentTileType: " + currentTileType);
+                    //System.out.println("from GameMap, checkIfCollides, currentTileType: " + currentTileType);
                     if (currentTileType != null && currentTileType.isCollidable()) {
                         return true;
                     }

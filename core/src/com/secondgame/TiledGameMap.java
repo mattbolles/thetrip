@@ -50,20 +50,21 @@ public class TiledGameMap extends GameMap {
 
     @Override
     public TileType getTileTypeByCoordinate(int layer, int col, int row) {
-        System.out.println("from TiledGameMap, getTileTypeByCoordinate at layer " + layer + " col " + col + " row " + row);
+        //System.out.println("from TiledGameMap, getTileTypeByCoordinate at layer " + layer + " col " + col + " row "
+        // + row);
         TiledMapTileLayer currentLayer = (TiledMapTileLayer) tiledMap.getLayers().get(layer);
-        System.out.println("currentLayer: " + currentLayer);
+        //System.out.println("currentLayer: " + currentLayer);
         Cell currentCell = currentLayer.getCell(col, row);
-        System.out.println("currentCell: " + currentCell);
+        //System.out.println("currentCell: " + currentCell);
 
         if (currentCell != null) {
             TiledMapTile currentTile = currentCell.getTile();
-            System.out.println("currentTile: " + currentTile);
+            //System.out.println("currentTile: " + currentTile);
 
             if (currentTile != null) {
-                System.out.println("going to return tile type");
+                //System.out.println("going to return tile type");
                 // return current tile type
-                System.out.println("tile id: " + currentTile.getId());
+                //System.out.println("tile id: " + currentTile.getId());
                 return TileType.getTileType(currentTile.getId());
 
             }

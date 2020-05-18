@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -22,6 +25,12 @@ public class GameScreen extends ScreenAdapter {
     float deltaX;
     float deltaY;
     Vector2 newCameraPosition;
+    float playerPositionX;
+    float playerPositionY;
+    float stateTime;
+
+
+
 
     // collisions not working - tiles all come back as null
     public GameScreen(final SecondGame game) {
@@ -30,9 +39,13 @@ public class GameScreen extends ScreenAdapter {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
+        playerPositionX = 40; // initial player position
+        playerPositionY = 320;
         //newCameraPosition = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //stage = new Stage(new ScreenViewport(camera), spriteBatch);
         //gameMap = new TiledGameMap(0);
+        int movePosition = 2; // in middle, 0 and 1 is left, 3 and 4 is right
+
         gameMap = new TiledGameMap(game.getOptions().getStartingLevel());
 
     }
@@ -51,6 +64,36 @@ public class GameScreen extends ScreenAdapter {
     //basically the game loop
     @Override
     public void render(float delta) {
+        // align camera with player object
+        for (GameObject gameObject : gameMap.gameObjects) {
+            if (gameObject.isPlayer()) {
+                //System.out.println("player pos: " + gameObject.getPosition());
+                //newCameraPosition.set(getCameraX((Player) gameObject), getCameraY((Player) gameObject));
+                //System.out.println("new cam pos:" + newCameraPosition);
+                //System.out.println("old cam pos:" + camera.position);
+                //newCameraPosition.set(camera.position.x - newCameraPosition.x,
+                //camera.position.y + newCameraPosition.y);
+                if (gameObject.getPosition().x > camera.position.x) {
+                    camera.position.x = gameObject.getPosition().x;
+                    camera.update();
+                }
+
+                // reach left side
+                if (gameObject.getPosition().x < camera.position.x && (gameObject.getPosition().x > GameInfo.SCREEN_WIDTH / 2)) {
+                    camera.position.x = gameObject.getPosition().x;
+                    camera.update();
+                }
+
+                //reach right side
+                if (camera.position.x > GameInfo.WORLD_WIDTH - GameInfo.SCREEN_WIDTH / 2) {
+                    camera.position.x = GameInfo.WORLD_WIDTH - GameInfo.SCREEN_WIDTH / 2;
+                    camera.update();
+                }
+                playerPositionX = gameObject.getPosition().x;
+                playerPositionY = gameObject.getPosition().y;
+                //System.out.println(getNewCameraPosition());
+            }
+        }
         // set color
         Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -58,6 +101,7 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
        // System.out.println("FPS: " + 1/delta);
         // if clicked
+        stateTime += delta;
         if (Gdx.input.isTouched()) {
             // drag gameMap
             camera.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
@@ -78,41 +122,17 @@ public class GameScreen extends ScreenAdapter {
 
             }
         }
-        // align camera with player object
-        for (GameObject gameObject : gameMap.gameObjects) {
-            if (gameObject.isPlayer()) {
-                //System.out.println("player pos: " + gameObject.getPosition());
-                //newCameraPosition.set(getCameraX((Player) gameObject), getCameraY((Player) gameObject));
-                //System.out.println("new cam pos:" + newCameraPosition);
-                //System.out.println("old cam pos:" + camera.position);
-                //newCameraPosition.set(camera.position.x - newCameraPosition.x,
-                        //camera.position.y + newCameraPosition.y);
-                if (gameObject.getPosition().x > camera.position.x) {
-                    camera.position.x = gameObject.getPosition().x;
-                    camera.update();
-                }
 
-                // reach left side
-                if (gameObject.getPosition().x < camera.position.x && (gameObject.getPosition().x > GameInfo.SCREEN_WIDTH / 2)) {
-                    camera.position.x = gameObject.getPosition().x;
-                    camera.update();
-                }
-
-                //reach right side
-                if (camera.position.x > GameInfo.WORLD_WIDTH - GameInfo.SCREEN_WIDTH / 2) {
-                    camera.position.x = GameInfo.WORLD_WIDTH - GameInfo.SCREEN_WIDTH / 2;
-                    camera.update();
-                }
-
-                //System.out.println(getNewCameraPosition());
-            }
-        };
 
 
 
         // deltatime is time between last update and now
         camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+        spriteBatch.setProjectionMatrix(camera.combined);
+        /*spriteBatch.draw(moveAnimation[movePosition].getKeyFrame(stateTime, true), playerPositionX,
+                playerPositionY,
+                GameInfo.PLAYER_WIDTH * 3, GameInfo.PLAYER_HEIGHT * 3);*/
+
         //spriteBatch.setProjectionMatrix(camera.combined);
         gameMap.update(Gdx.graphics.getDeltaTime());
         gameMap.render(camera, spriteBatch);

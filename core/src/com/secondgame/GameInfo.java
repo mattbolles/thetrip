@@ -17,6 +17,9 @@ public class GameInfo {
     public static final int offsetMaxY = WORLD_HEIGHT - SCREEN_HEIGHT;
     public static final int offsetMinX = 0;
     public static final int offsetMinY = 0;
+    public static final int PLAYER_WIDTH = 30;
+    public static final int PLAYER_HEIGHT = 64;
+    public static final float ANIMATION_SPEED = 0.5f;
 
 
     static {
