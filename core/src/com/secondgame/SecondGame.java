@@ -24,6 +24,7 @@ public class SecondGame extends Game {
     private GameOverScreen gameOverScreen;
     private MenuScreen menuScreen;
     private GameScreen gameScreen;
+    private TheTrip theTrip;
 
     SpriteBatch batch;
     ShapeRenderer shapeRenderer;
@@ -31,6 +32,7 @@ public class SecondGame extends Game {
 
     @Override
     public void create() {
+        batch = new SpriteBatch();
         loadingScreen = new LoadingScreen(this);
 
         theTripOptions = new GameOptions();
@@ -41,6 +43,11 @@ public class SecondGame extends Game {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public void render() {
+        super.render();
     }
 
     public GameOptions getOptions() {
@@ -112,6 +119,12 @@ public class SecondGame extends Game {
                 this.setScreen(gameScreen);
                 break;
 
+            /*case "gamescreen":
+                if (theTrip == null) {
+                    theTrip = new TheTrip(this);
+                }
+                theTrip();
+                break;*/
 
         }
     }

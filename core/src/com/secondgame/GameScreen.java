@@ -14,7 +14,7 @@ import com.secondgame.gameobject.Player;
 
 public class GameScreen extends ScreenAdapter {
 
-    private SecondGame game;
+    final SecondGame game;
     private Stage stage;
     SpriteBatch spriteBatch;
     OrthographicCamera camera;
@@ -23,23 +23,25 @@ public class GameScreen extends ScreenAdapter {
     float deltaY;
     Vector2 newCameraPosition;
 
-    public GameScreen(SecondGame game) {
+    // collisions not working - tiles all come back as null
+    public GameScreen(final SecondGame game) {
         this.game = game;
-        spriteBatch = new SpriteBatch();
+        spriteBatch = game.batch;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        newCameraPosition = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
-        stage = new Stage(new ScreenViewport(camera));
-        camera.update();
+        //newCameraPosition = new Vector2(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //stage = new Stage(new ScreenViewport(camera), spriteBatch);
         //gameMap = new TiledGameMap(0);
         gameMap = new TiledGameMap(game.getOptions().getStartingLevel());
+
     }
 
     //create load stuff here
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
+        System.out.println("Start GameScreen show");
+        //Gdx.input.setInputProcessor(stage);
         float width = Gdx.graphics.getWidth();
         float height = Gdx.graphics.getHeight();
 
@@ -55,7 +57,6 @@ public class GameScreen extends ScreenAdapter {
         // fill screen with color
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
        // System.out.println("FPS: " + 1/delta);
-
         // if clicked
         if (Gdx.input.isTouched()) {
             // drag gameMap
@@ -63,11 +64,13 @@ public class GameScreen extends ScreenAdapter {
             camera.update();
         }
 
+        // if tiles not working properly check tile set and make sure tile IDs match the tile type class
         // if clicked - after click finished
         if (Gdx.input.justTouched()) {
             Vector3 clickPositionOnScreen = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             Vector3 clickPositionOnMap = camera.unproject(clickPositionOnScreen);
-            TileType currentTileType = gameMap.getTileTypeByLocation(1, clickPositionOnMap.x, clickPositionOnMap.y);
+            // 0 = 1st layer as index starts at 0
+            TileType currentTileType = gameMap.getTileTypeByLocation(0, clickPositionOnMap.x, clickPositionOnMap.y);
             System.out.println(currentTileType == null);
             if (currentTileType != null) {
                 System.out.println("Click on tile id: " + currentTileType.getId() + " name: " + currentTileType.getName() + " is collidable: " + currentTileType.isCollidable() + " damage: " + currentTileType.getDamage());
@@ -78,24 +81,29 @@ public class GameScreen extends ScreenAdapter {
         // align camera with player object
         for (GameObject gameObject : gameMap.gameObjects) {
             if (gameObject.isPlayer()) {
-                System.out.println("player pos: " + gameObject.getPosition());
-                newCameraPosition.set(getCameraX((Player) gameObject), getCameraY((Player) gameObject));
-                System.out.println("new cam pos:" + newCameraPosition);
-                System.out.println("old cam pos:" + camera.position);
-                newCameraPosition.set(camera.position.x - newCameraPosition.x, camera.position.y + newCameraPosition.y);
+                //System.out.println("player pos: " + gameObject.getPosition());
+                //newCameraPosition.set(getCameraX((Player) gameObject), getCameraY((Player) gameObject));
+                //System.out.println("new cam pos:" + newCameraPosition);
+                //System.out.println("old cam pos:" + camera.position);
+                //newCameraPosition.set(camera.position.x - newCameraPosition.x,
+                        //camera.position.y + newCameraPosition.y);
                 if (gameObject.getPosition().x > camera.position.x) {
                     camera.position.x = gameObject.getPosition().x;
+                    camera.update();
                 }
 
                 // reach left side
                 if (gameObject.getPosition().x < camera.position.x && (gameObject.getPosition().x > GameInfo.SCREEN_WIDTH / 2)) {
                     camera.position.x = gameObject.getPosition().x;
+                    camera.update();
                 }
 
                 //reach right side
                 if (camera.position.x > GameInfo.WORLD_WIDTH - GameInfo.SCREEN_WIDTH / 2) {
                     camera.position.x = GameInfo.WORLD_WIDTH - GameInfo.SCREEN_WIDTH / 2;
+                    camera.update();
                 }
+
                 //System.out.println(getNewCameraPosition());
             }
         };
@@ -103,40 +111,27 @@ public class GameScreen extends ScreenAdapter {
 
 
         // deltatime is time between last update and now
+        camera.update();
+        game.batch.setProjectionMatrix(camera.combined);
+        //spriteBatch.setProjectionMatrix(camera.combined);
         gameMap.update(Gdx.graphics.getDeltaTime());
         gameMap.render(camera, spriteBatch);
         //camera.translate(newCameraPosition);
-        camera.update();
+
         //perform actions after input
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        //stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         // draw appropriate items
-        stage.draw();
+        //stage.draw();
 
-    }
-
-    public float getCameraX(Player player) {
-        // get 1st tank
-        // divide by 4 as each player gets half the screen width originally
-        float cameraX = camera.position.x - (GameInfo.SCREEN_WIDTH / 2);
-        if (cameraX > GameInfo.offsetMaxX) {
-            cameraX = GameInfo.offsetMaxX;
-        } else if (cameraX < GameInfo.offsetMinX) {
-            cameraX = GameInfo.offsetMinX;
-        }
-        return cameraX;
-    }
-
-    public float getCameraY(Player player) {
-        float cameraY = camera.position.y + (GameInfo.SCREEN_HEIGHT / 2);
-        if (cameraY > GameInfo.offsetMaxY) {
-            cameraY = GameInfo.offsetMaxY;
-        } else if (cameraY < GameInfo.offsetMinY) {
-            cameraY = GameInfo.offsetMinY;
-        }
-        return cameraY;
     }
 
     public Vector2 getNewCameraPosition() {
         return newCameraPosition;
+    }
+
+    @Override
+    public void dispose() {
+        spriteBatch.dispose();
+        gameMap.dispose();
     }
 }

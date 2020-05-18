@@ -7,14 +7,16 @@ import com.secondgame.gameobject.GameObjectLoader;
 import com.secondgame.gameobject.Player;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public abstract class GameMap {
 
     protected ArrayList<GameObject> gameObjects;
 
-    public GameMap() {
+    public GameMap(int mapToLoad) {
         gameObjects = new ArrayList<GameObject>();
-        gameObjects.addAll(GameObjectLoader.loadGameObjectsIntoMap("states", this));
+        System.out.println("from GameMap constructor, attempting to load: /maps/level" + mapToLoad + "/states");
+        gameObjects.addAll(Objects.requireNonNull(GameObjectLoader.loadGameObjectsIntoMap("maps/level" + mapToLoad + "/states", this)));
 
     }
 
@@ -72,7 +74,9 @@ public abstract class GameMap {
             for (int column = firstTileY; column < lastTileY; column++) {
                 // go through each layer
                 for (int layer = 0; layer < getLayers(); layer++) {
+                    System.out.println("from GameMap, checkIfCollides, layer " + layer + " row " + row + " col " + column);
                     TileType currentTileType = getTileTypeByCoordinate(layer, column, row);
+                    System.out.println("from GameMap, checkIfCollides, currentTileType: " + currentTileType);
                     if (currentTileType != null && currentTileType.isCollidable()) {
                         return true;
                     }

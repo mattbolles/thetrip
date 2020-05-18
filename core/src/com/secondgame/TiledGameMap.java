@@ -16,7 +16,9 @@ public class TiledGameMap extends GameMap {
 
     //init
     public TiledGameMap(int mapToLoad) {
+        super(mapToLoad);
         tiledMap = new TmxMapLoader().load("maps/level" + mapToLoad + "/level" + mapToLoad + ".tmx");
+        System.out.println("tiledgamemap loading level: " + mapToLoad);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
@@ -48,15 +50,22 @@ public class TiledGameMap extends GameMap {
 
     @Override
     public TileType getTileTypeByCoordinate(int layer, int col, int row) {
+        System.out.println("from TiledGameMap, getTileTypeByCoordinate at layer " + layer + " col " + col + " row " + row);
         TiledMapTileLayer currentLayer = (TiledMapTileLayer) tiledMap.getLayers().get(layer);
+        System.out.println("currentLayer: " + currentLayer);
         Cell currentCell = currentLayer.getCell(col, row);
+        System.out.println("currentCell: " + currentCell);
 
         if (currentCell != null) {
             TiledMapTile currentTile = currentCell.getTile();
+            System.out.println("currentTile: " + currentTile);
 
             if (currentTile != null) {
+                System.out.println("going to return tile type");
                 // return current tile type
+                System.out.println("tile id: " + currentTile.getId());
                 return TileType.getTileType(currentTile.getId());
+
             }
         }
         return null;
@@ -65,14 +74,24 @@ public class TiledGameMap extends GameMap {
     @Override
     public int getWidth() {
         // return width of current tile
-        TiledMapTileLayer currentLayer = ((TiledMapTileLayer) tiledMap.getLayers().get(1));
+        TiledMapTileLayer currentLayer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
         return currentLayer.getWidth();
     }
 
     @Override
     public int getHeight() {
         // return height of current tile
-        TiledMapTileLayer currentLayer = ((TiledMapTileLayer) tiledMap.getLayers().get(1));
+        TiledMapTileLayer currentLayer = ((TiledMapTileLayer) tiledMap.getLayers().get(0));
+        return currentLayer.getHeight();
+    }
+
+    public int getWidthFromLayer(int layer) {
+        TiledMapTileLayer currentLayer = ((TiledMapTileLayer) tiledMap.getLayers().get(layer));
+        return currentLayer.getWidth();
+    }
+
+    public int getHeightFromLayer(int layer) {
+        TiledMapTileLayer currentLayer = ((TiledMapTileLayer) tiledMap.getLayers().get(layer));
         return currentLayer.getHeight();
     }
 

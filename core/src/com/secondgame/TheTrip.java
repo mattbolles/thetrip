@@ -2,10 +2,13 @@ package com.secondgame;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.secondgame.gameobject.GameObject;
+import com.secondgame.gameobject.Player;
 
 public class TheTrip extends ApplicationAdapter {
     SpriteBatch spriteBatch;
@@ -58,11 +61,34 @@ public class TheTrip extends ApplicationAdapter {
 
             }
         }
+        for (GameObject gameObject : gameMap.gameObjects) {
+            if (gameObject.isPlayer()) {
+                //System.out.println("player pos: " + gameObject.getPosition());
+                //System.out.println("new cam pos:" + newCameraPosition);
+                //System.out.println("old cam pos:" + camera.position);
+                if (gameObject.getPosition().x > camera.position.x) {
+                    camera.position.x = gameObject.getPosition().x;
+                }
+
+                // reach left side
+                if (gameObject.getPosition().x < camera.position.x && (gameObject.getPosition().x > GameInfo.SCREEN_WIDTH / 2)) {
+                    camera.position.x = gameObject.getPosition().x;
+                }
+
+                //reach right side
+                if (camera.position.x > GameInfo.WORLD_WIDTH - GameInfo.SCREEN_WIDTH / 2) {
+                    camera.position.x = GameInfo.WORLD_WIDTH - GameInfo.SCREEN_WIDTH / 2;
+                }
+
+                //System.out.println(getNewCameraPosition());
+            }
+        };
         camera.update();
         // deltatime is time between last update and now
         gameMap.update(Gdx.graphics.getDeltaTime());
         gameMap.render(camera, spriteBatch);
     }
+
 
     @Override
     public void dispose () {

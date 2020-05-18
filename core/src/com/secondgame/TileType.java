@@ -5,10 +5,12 @@ import java.util.HashMap;
 public enum TileType {
 
     // change IDs later when fixed, got messed up in Tiled somehow
-    GRASS(1, true, "grass"),
+    /*GRASS(1, true, "grass"),
     DIRT(2, true, "dirt"),
     BLOCK_PURPLE(3, true, "blockpurple"),
-    SKY_PURPLE(0, true, "skypurple");
+    SKY_PURPLE(0, true, "skypurple");*/
+    // IDs are one more than they are in tiled map... idk why
+    BLOCK(1, true, "block");
 
     public static final int TILE_SIZE = 32;
 
@@ -34,6 +36,7 @@ public enum TileType {
         return id;
     }
 
+
     public boolean isCollidable() {
         return collidable;
     }
@@ -53,6 +56,8 @@ public enum TileType {
     static {
         tileMap = new HashMap<Integer, TileType>();
         for (TileType tileType : TileType.values()) {
+            System.out.println("from TileType, processing tile: " + tileType.getId() + ", " + tileType.getName() +
+                    ", is collidable: " + tileType.isCollidable());
             tileMap.put(tileType.getId(), tileType);
         }
     }
@@ -61,5 +66,6 @@ public enum TileType {
     public static TileType getTileType(int id) {
         return tileMap.get(id);
     }
+
     
 }

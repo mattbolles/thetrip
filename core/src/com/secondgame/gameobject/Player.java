@@ -8,8 +8,8 @@ import com.secondgame.GameMap;
 
 public class Player extends GameObject {
 
-    private static final int speed = 160;
-    private static final int jumpVelocity = 5;
+    private static int speed = 180;
+    private static int jumpVelocity = 6;
 
     Texture playerImage;
 
@@ -30,6 +30,19 @@ public class Player extends GameObject {
     public void update(float deltaTime, float gravity) {
         // going to need seperate control data structure - single jump button, etc
         // unify it basically - controller support - maybe implement customizable controls
+
+
+        // hold shift to run
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+            speed = 240;
+        }
+
+
+        // reset speed after run
+        if (!Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && onGround) {
+            speed = 180;
+        }
+
         //initial jump from ground
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && onGround) {
             this.velocityY += jumpVelocity * getWeight();
