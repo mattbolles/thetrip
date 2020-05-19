@@ -48,7 +48,7 @@ public class Hud {
         hud.add(livesNumLabel).left();
         hud.row().pad(20, 50 , 0, 0);
         hud.add(healthLabel).right();
-        hud.add(healthNumLabel).left();
+        //hud.add(healthNumLabel).left();
 
         hudStage.addActor(hud);
         hud.left();

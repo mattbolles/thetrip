@@ -182,6 +182,10 @@ public class Player extends GameObject {
         return this.lives;
     }
 
+    public String getDirection() {
+        return direction;
+    }
+
     public void setJustKilled(boolean justKilled) {
         this.justKilled = justKilled;
     }

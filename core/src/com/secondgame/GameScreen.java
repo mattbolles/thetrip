@@ -1,6 +1,7 @@
 package com.secondgame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,8 +12,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.secondgame.gameobject.Bullet;
 import com.secondgame.gameobject.GameObject;
 import com.secondgame.gameobject.Player;
+
+import java.util.ArrayList;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -40,16 +44,20 @@ public class GameScreen extends ScreenAdapter {
     boolean playerJustKilled;
     boolean playerCompletelyDead;
     boolean justReset;
-
-
+    ArrayList<Bullet> bulletList;
+    float bulletTimer;
+    String playerDirection;
 
 
     // collisions not working - tiles all come back as null
     public GameScreen(final SecondGame game) {
         this.game = game;
         this.justReset = false;
+        bulletTimer = 0;
+        bulletList = new ArrayList<Bullet>();
         spriteBatch = game.batch;
         shapeRenderer = new ShapeRenderer();
+        playerDirection = "right";
         camera = new OrthographicCamera();
         //camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, GameInfo.SCREEN_WIDTH, GameInfo.SCREEN_HEIGHT);
@@ -93,7 +101,9 @@ public class GameScreen extends ScreenAdapter {
     //basically the game loop
     @Override
     public void render(float delta) {
+        //spriteBatch.end();
         // update in relation to player object
+        bulletTimer += delta;
         for (GameObject gameObject : gameMap.gameObjects) {
             // align camera with player object
 
@@ -106,100 +116,57 @@ public class GameScreen extends ScreenAdapter {
                 playerLives = ((Player) gameObject).getLives();
                 playerJustKilled = ((Player) gameObject).isJustKilled();
                 playerCompletelyDead = ((Player) gameObject).isCompletelyDead();
-
-                //System.out.println("player pos: " + gameObject.getPosition());
-                //newCameraPosition.set(getCameraX((Player) gameObject), getCameraY((Player) gameObject));
-                //System.out.println("new cam pos:" + newCameraPosition);
-                //System.out.println("old cam pos:" + camera.position);
-                //newCameraPosition.set(camera.position.x - newCameraPosition.x,
-                //camera.position.y + newCameraPosition.y);
                 playerPositionX = gameObject.getPosition().x;
                 playerPositionY = gameObject.getPosition().y;
-                //System.out.println("player at: " + playerPositionX + ", " + playerPositionY);
-                //System.out.println("camera at: " + camera.position.x + ", " + camera.position.y);
-                if (playerPositionX > camera.position.x) {
-                    camera.position.x = playerPositionX;
-                    camera.update();
-                }
-                // respawn
-
-                if (playerPositionX < camera.position.x) {
-                    // reach left side
-                    if (playerPositionX > GameInfo.SCREEN_WIDTH / 2) {
-                        camera.position.x = playerPositionX;
-                        camera.update();
-                    }
-
-
-                }
-
-                // reach left side
-               /* if (playerPositionX < camera.position.x && (playerPositionX > GameInfo.SCREEN_WIDTH / 2)) {
-                    camera.position.x = playerPositionX;
-                    camera.update();
-                }*/
-
-                //reach right side
-                if (camera.position.x > GameInfo.WORLD_WIDTH - GameInfo.SCREEN_WIDTH / 2) {
-                    camera.position.x = GameInfo.WORLD_WIDTH - GameInfo.SCREEN_WIDTH / 2;
-                    camera.update();
-                }
-
-                if (playerPositionY > camera.position.y) {
-                    camera.position.y = playerPositionY;
-                    camera.update();
-                }
-
-                if (playerPositionY < camera.position.y && playerPositionY > GameInfo.SCREEN_HEIGHT / 2) {
-                    camera.position.y = playerPositionY;
-                    camera.update();
-                }
-
-                if (camera.position.y > GameInfo.WORLD_HEIGHT - GameInfo.SCREEN_HEIGHT / 2) {
-                    camera.position.y = GameInfo.WORLD_HEIGHT - GameInfo.SCREEN_HEIGHT / 2;
-                    camera.update();
-                }
+                playerDirection = ((Player) gameObject).getDirection();
+                //System.out.println("from GameScreen render, playpos: " + playerPositionX + "," + playerPositionY);
+                updateCamera();
 
                 if (playerJustKilled) {
-                    System.out.println("from gameScreen: playerJustKilled");
-                    camera.position.x = initialCameraPosition.x;
-                    camera.position.y = initialCameraPosition.y;
-                    camera.update();
+                    System.out.println("from gameScreen: playerJustKilled 1");
                     ((Player) gameObject).setJustKilled(false);
-                    System.out.println("playerJustKilled: " + ((Player) gameObject).isJustKilled());
                 }
 
                 if (playerCompletelyDead) {
-                    System.out.println("from gameScreen: playerCompletelydead");
+                    System.out.println("from gameScreen: playerCompletelydead 1");
                     ((Player) gameObject).setCompletelyDead(false);
                 }
-
-
-                // reset camera upon player death if player not completely dead
-                if (((Player) gameObject).isKilled()) {
-                    System.out.println("init camera position: " + initialCameraPosition.x + ", " + initialCameraPosition.y);
-                    camera.position.x = playerPositionX;
-                    camera.position.y = playerPositionY;
-                    camera.update();
-                }
-
-                if (((Player) gameObject).isCompletelyDead() ) {
-                    game.loadScreen(GameState.GAME_OVER);
-
-                }
-
-
-                //System.out.println(getNewCameraPosition());
             }
         }
 
+        // E to shoot - add inout handling method later
+        // delay shooting
+        if (Gdx.input.isKeyPressed(Input.Keys.E) && bulletTimer >= GameInfo.BULLET_COOLDOWN) {
+            bulletTimer = 0;
+            System.out.println("from bullet key press, playpos: " + playerPositionX + "," + playerPositionY);
+            // facing right
+            if ("right".equals(playerDirection)) {
+                bulletList.add(new Bullet(playerPositionX + 20, playerPositionY + 30, "right", camera));
+            }
+
+            //facing left
+            else {
+                bulletList.add(new Bullet(playerPositionX - 20, playerPositionY + 30, "left", camera));
+            }
+
+        }
+
+
+        // update bullets
+        ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
+        for (Bullet bullet : bulletList) {
+            bullet.update(delta, 0);
+            if (bullet.needToRemove) {
+                bulletsToRemove.add(bullet);
+            }
+        }
+        bulletList.removeAll(bulletsToRemove);
 
         if (playerJustKilled) {
             System.out.println("from gameScreen: playerJustKilled method 2");
             camera.position.x = 400;
             camera.position.y = 300;
             camera.update();
-            System.out.println("cam pos: " + camera.position.x + ", " + camera.position.y);
         }
 
         if (playerCompletelyDead) {
@@ -250,20 +217,25 @@ public class GameScreen extends ScreenAdapter {
 
         // deltatime is time between last update and now
         camera.update();
-
-        //spriteBatch.setProjectionMatrix(camera.combined);
-        /*spriteBatch.draw(moveAnimation[movePosition].getKeyFrame(stateTime, true), playerPositionX,
-                playerPositionY,
-                GameInfo.PLAYER_WIDTH * 3, GameInfo.PLAYER_HEIGHT * 3);*/
-
-        //spriteBatch.setProjectionMatrix(camera.combined);
-
         gameMap.update(Gdx.graphics.getDeltaTime());
+
         gameMap.render(camera, spriteBatch);
+
+        camera.update();
+        spriteBatch.setProjectionMatrix(camera.combined);
+        spriteBatch.begin();
+        //spriteBatch.setProjectionMatrix(camera.combined);
+        for (Bullet bullet : bulletList) {
+            if (!bulletList.isEmpty()) {
+                bullet.render(spriteBatch);
+            }
+
+        }
+        spriteBatch.end();
         // draw hud background and hud after so it's on top
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(40, GameInfo.WORLD_HEIGHT - 250, 230, 65);
+        shapeRenderer.rect(40, GameInfo.WORLD_HEIGHT - 110, 230, 65);
         shapeRenderer.end();
 
         spriteBatch.setProjectionMatrix(hud.hudStage.getCamera().combined);
@@ -271,18 +243,46 @@ public class GameScreen extends ScreenAdapter {
         this.hud.setLives(playerLives);
         hud.hudStage.act();
         hud.hudStage.draw();
-
-        //camera.translate(newCameraPosition);
-
-        //perform actions after input
-        //stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        // draw appropriate items
-        //stage.draw();
-
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.rect(200, GameInfo.WORLD_HEIGHT - 100, (float) (playerHealth / 1.7), 20);
+        shapeRenderer.end();
     }
 
-    public Vector2 getNewCameraPosition() {
-        return newCameraPosition;
+    public void updateCamera() {
+        if (playerPositionX > camera.position.x) {
+            camera.position.x = playerPositionX;
+            camera.update();
+        }
+
+        if (playerPositionX < camera.position.x) {
+            // reach left side
+            if (playerPositionX > GameInfo.SCREEN_WIDTH / 2) {
+                camera.position.x = playerPositionX;
+                camera.update();
+            }
+        }
+
+        //reach right side
+        if (camera.position.x > GameInfo.WORLD_WIDTH - GameInfo.SCREEN_WIDTH / 2) {
+            camera.position.x = GameInfo.WORLD_WIDTH - GameInfo.SCREEN_WIDTH / 2;
+            camera.update();
+        }
+
+        if (playerPositionY > camera.position.y) {
+            camera.position.y = playerPositionY;
+            camera.update();
+        }
+
+        if (playerPositionY < camera.position.y && playerPositionY > GameInfo.SCREEN_HEIGHT / 2) {
+            camera.position.y = playerPositionY;
+            camera.update();
+        }
+
+        if (camera.position.y > GameInfo.WORLD_HEIGHT - GameInfo.SCREEN_HEIGHT / 2) {
+            camera.position.y = GameInfo.WORLD_HEIGHT - GameInfo.SCREEN_HEIGHT / 2;
+            camera.update();
+        }
     }
 
     @Override
