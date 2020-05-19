@@ -1,22 +1,15 @@
 package com.secondgame;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.assets.loaders.SoundLoader;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.secondgame.gameobject.GameObject;
 import com.secondgame.gameobject.Player;
@@ -93,6 +86,7 @@ public class GameScreen extends ScreenAdapter {
             if (gameObject instanceof Player) {
                 playerHealth = ((Player) gameObject).getHealth();
                 playerLives = ((Player) gameObject).getLives();
+
                 //System.out.println("player pos: " + gameObject.getPosition());
                 //newCameraPosition.set(getCameraX((Player) gameObject), getCameraY((Player) gameObject));
                 //System.out.println("new cam pos:" + newCameraPosition);
@@ -161,7 +155,7 @@ public class GameScreen extends ScreenAdapter {
        // System.out.println("FPS: " + 1/delta);
         // if clicked
         stateTime += delta;
-        if (Gdx.input.isTouched()) {
+        /*if (Gdx.input.isTouched()) {
             // drag gameMap
             camera.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
             camera.update();
@@ -179,7 +173,7 @@ public class GameScreen extends ScreenAdapter {
                 System.out.println("Click on tile id: " + currentTileType.getId() + " name: " + currentTileType.getName() + " is collidable: " + currentTileType.isCollidable() + " damage: " + currentTileType.getDamage());
 
             }
-        }
+        }*/
 
 
 
@@ -201,8 +195,13 @@ public class GameScreen extends ScreenAdapter {
         shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.rect(40, GameInfo.WORLD_HEIGHT - 250, 230, 65);
         shapeRenderer.end();
-        spriteBatch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.draw();
+
+        spriteBatch.setProjectionMatrix(hud.hudStage.getCamera().combined);
+        this.hud.setHealth(playerHealth);
+        this.hud.setLives(playerLives);
+        hud.hudStage.act();
+        hud.hudStage.draw();
+
         //camera.translate(newCameraPosition);
 
         //perform actions after input
