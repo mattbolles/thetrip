@@ -4,15 +4,18 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.loaders.SoundLoader;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.secondgame.gameobject.GameObject;
@@ -40,6 +43,7 @@ public class GameScreen extends ScreenAdapter {
     int playerLives;
     private Hud hud;
     private Viewport viewport;
+    private ShapeRenderer shapeRenderer;
 
 
 
@@ -48,11 +52,12 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(final SecondGame game) {
         this.game = game;
         spriteBatch = game.batch;
-        hud = new Hud(spriteBatch);
+        shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         //camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, GameInfo.SCREEN_WIDTH, GameInfo.SCREEN_HEIGHT);
-        camera.update();
+        //camera.update();
+        hud = new Hud(spriteBatch);
         initialCameraPosition = camera.position;
         soundPlayer = new SoundPlayer(game);
         playerPositionX = 40; // initial player position
@@ -188,10 +193,16 @@ public class GameScreen extends ScreenAdapter {
                 GameInfo.PLAYER_WIDTH * 3, GameInfo.PLAYER_HEIGHT * 3);*/
 
         //spriteBatch.setProjectionMatrix(camera.combined);
-        spriteBatch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.draw();
+
         gameMap.update(Gdx.graphics.getDeltaTime());
         gameMap.render(camera, spriteBatch);
+        // draw hud background and hud after so it's on top
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.rect(40, GameInfo.WORLD_HEIGHT - 250, 230, 65);
+        shapeRenderer.end();
+        spriteBatch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
         //camera.translate(newCameraPosition);
 
         //perform actions after input
