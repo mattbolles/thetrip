@@ -126,6 +126,8 @@ public abstract class GameObject {
         return this.gameObjectType.equals(GameObjectType.PLAYER);
     }
 
+
+
   /*  public abstract boolean isCompletelyDead();
 
     public abstract boolean killPlayer();*/

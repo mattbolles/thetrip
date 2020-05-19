@@ -119,14 +119,22 @@ public class Player extends GameObject {
         return completelyDead;
     }
 
+    public void setCompletelyDead(boolean completelyDead) {
+        this.completelyDead = completelyDead;
+    }
+
     public void respawnPlayer() {
         this.health = 100;
         //this.position.set(spawnX, spawnY);
     }
 
     public void revivePlayer() {
+        System.out.println("Player revivePlayer reach");
         this.health = 100;
         this.lives = 3;
+        this.setX(spawnX);
+        this.setY(spawnY);
+        System.out.println("after revive, health: " + health + " lives: " + lives);
         //this.position.set(spawnX, spawnY);
     }
 

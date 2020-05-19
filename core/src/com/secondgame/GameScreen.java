@@ -38,6 +38,8 @@ public class GameScreen extends ScreenAdapter {
     private Viewport viewport;
     private ShapeRenderer shapeRenderer;
     boolean playerJustKilled;
+    boolean playerCompletelyDead;
+    boolean justReset;
 
 
 
@@ -45,6 +47,7 @@ public class GameScreen extends ScreenAdapter {
     // collisions not working - tiles all come back as null
     public GameScreen(final SecondGame game) {
         this.game = game;
+        this.justReset = false;
         spriteBatch = game.batch;
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
@@ -76,6 +79,10 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         System.out.println("Start GameScreen show");
+        //reset health/lives/etc
+        this.playerLives = 3;
+        this.playerHealth = 100;
+        this.playerCompletelyDead = false;
         //Gdx.input.setInputProcessor(stage);
         float width = Gdx.graphics.getWidth();
         float height = Gdx.graphics.getHeight();
@@ -89,10 +96,16 @@ public class GameScreen extends ScreenAdapter {
         // update in relation to player object
         for (GameObject gameObject : gameMap.gameObjects) {
             // align camera with player object
+
             if (gameObject instanceof Player) {
+                if (justReset) {
+                    ((Player) gameObject).revivePlayer();
+                    justReset = false;
+                }
                 playerHealth = ((Player) gameObject).getHealth();
                 playerLives = ((Player) gameObject).getLives();
                 playerJustKilled = ((Player) gameObject).isJustKilled();
+                playerCompletelyDead = ((Player) gameObject).isCompletelyDead();
 
                 //System.out.println("player pos: " + gameObject.getPosition());
                 //newCameraPosition.set(getCameraX((Player) gameObject), getCameraY((Player) gameObject));
@@ -156,6 +169,11 @@ public class GameScreen extends ScreenAdapter {
                     System.out.println("playerJustKilled: " + ((Player) gameObject).isJustKilled());
                 }
 
+                if (playerCompletelyDead) {
+                    System.out.println("from gameScreen: playerCompletelydead");
+                    ((Player) gameObject).setCompletelyDead(false);
+                }
+
 
                 // reset camera upon player death if player not completely dead
                 if (((Player) gameObject).isKilled()) {
@@ -166,7 +184,6 @@ public class GameScreen extends ScreenAdapter {
                 }
 
                 if (((Player) gameObject).isCompletelyDead() ) {
-                    ((Player) gameObject).revivePlayer();
                     game.loadScreen(GameState.GAME_OVER);
 
                 }
@@ -183,6 +200,17 @@ public class GameScreen extends ScreenAdapter {
             camera.position.y = 300;
             camera.update();
             System.out.println("cam pos: " + camera.position.x + ", " + camera.position.y);
+        }
+
+        if (playerCompletelyDead) {
+            System.out.println("from gameScreen: playerCompletelyDead method 2");
+            // if actually dead
+            if (!(playerLives > 0)) {
+                justReset = true;
+                game.loadScreen(GameState.GAME_OVER);
+            }
+
+
         }
 
         //System.out.println("current player position: " + playerPositionX + ", " + playerPositionY);
