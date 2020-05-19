@@ -37,6 +37,7 @@ public class GameScreen extends ScreenAdapter {
     private Hud hud;
     private Viewport viewport;
     private ShapeRenderer shapeRenderer;
+    boolean playerJustKilled;
 
 
 
@@ -52,6 +53,11 @@ public class GameScreen extends ScreenAdapter {
         //camera.update();
         hud = new Hud(spriteBatch);
         initialCameraPosition = camera.position;
+        System.out.println("from GameScreen: camera.position: " + camera.position.x +
+                ", " + camera.position.y);
+        System.out.println("from GameScreen: initialCameraPosition: " + initialCameraPosition.x +
+                        ", " + initialCameraPosition.y);
+
         soundPlayer = new SoundPlayer(game);
         playerPositionX = 40; // initial player position
         playerPositionY = 320;
@@ -86,6 +92,7 @@ public class GameScreen extends ScreenAdapter {
             if (gameObject instanceof Player) {
                 playerHealth = ((Player) gameObject).getHealth();
                 playerLives = ((Player) gameObject).getLives();
+                playerJustKilled = ((Player) gameObject).isJustKilled();
 
                 //System.out.println("player pos: " + gameObject.getPosition());
                 //newCameraPosition.set(getCameraX((Player) gameObject), getCameraY((Player) gameObject));
@@ -101,12 +108,23 @@ public class GameScreen extends ScreenAdapter {
                     camera.position.x = playerPositionX;
                     camera.update();
                 }
+                // respawn
+
+                if (playerPositionX < camera.position.x) {
+                    // reach left side
+                    if (playerPositionX > GameInfo.SCREEN_WIDTH / 2) {
+                        camera.position.x = playerPositionX;
+                        camera.update();
+                    }
+
+
+                }
 
                 // reach left side
-                if (playerPositionX < camera.position.x && (playerPositionX > GameInfo.SCREEN_WIDTH / 2)) {
+               /* if (playerPositionX < camera.position.x && (playerPositionX > GameInfo.SCREEN_WIDTH / 2)) {
                     camera.position.x = playerPositionX;
                     camera.update();
-                }
+                }*/
 
                 //reach right side
                 if (camera.position.x > GameInfo.WORLD_WIDTH - GameInfo.SCREEN_WIDTH / 2) {
@@ -129,22 +147,46 @@ public class GameScreen extends ScreenAdapter {
                     camera.update();
                 }
 
-                // reset camera upon player death if player not completely dead
-                if (playerHealth == 0 && !((Player) gameObject).isCompletelyDead()) {
-                    System.out.println("init camera position: " + initialCameraPosition.x + ", " + initialCameraPosition.y);
+                if (playerJustKilled) {
+                    System.out.println("from gameScreen: playerJustKilled");
                     camera.position.x = initialCameraPosition.x;
                     camera.position.y = initialCameraPosition.y;
+                    camera.update();
+                    ((Player) gameObject).setJustKilled(false);
+                    System.out.println("playerJustKilled: " + ((Player) gameObject).isJustKilled());
+                }
+
+
+                // reset camera upon player death if player not completely dead
+                if (((Player) gameObject).isKilled()) {
+                    System.out.println("init camera position: " + initialCameraPosition.x + ", " + initialCameraPosition.y);
+                    camera.position.x = playerPositionX;
+                    camera.position.y = playerPositionY;
+                    camera.update();
                 }
 
                 if (((Player) gameObject).isCompletelyDead() ) {
-                    game.loadScreen(GameState.GAME_OVER);
                     ((Player) gameObject).revivePlayer();
+                    game.loadScreen(GameState.GAME_OVER);
+
                 }
 
 
                 //System.out.println(getNewCameraPosition());
             }
         }
+
+
+        if (playerJustKilled) {
+            System.out.println("from gameScreen: playerJustKilled method 2");
+            camera.position.x = 400;
+            camera.position.y = 300;
+            camera.update();
+            System.out.println("cam pos: " + camera.position.x + ", " + camera.position.y);
+        }
+
+        //System.out.println("current player position: " + playerPositionX + ", " + playerPositionY);
+        //System.out.println("current cam position: " + camera.position.x + ", " + camera.position.y);
         // set color
         Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);

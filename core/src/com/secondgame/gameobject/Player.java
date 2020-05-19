@@ -30,6 +30,8 @@ public class Player extends GameObject {
     boolean completelyDead;
     float spawnX;
     float spawnY;
+    boolean justKilled;
+
 
     /*public Player(float x, float y, GameMap gameMap) {
         super(x, y, GameObjectType.PLAYER, gameMap);
@@ -41,6 +43,7 @@ public class Player extends GameObject {
         super.create(gameObjectState, gameObjectType, gameMap);
         this.spawnX = 40;
         this.spawnY = 320;
+        this.justKilled = false;
         direction = "right";
         playerImage = new Texture("images/player.png");
         moveAnimationSheet = new Texture(Gdx.files.internal("images/playerspritesheet.png"));
@@ -56,8 +59,8 @@ public class Player extends GameObject {
 
         rightAnimation = new Animation<TextureRegion>(GameInfo.ANIMATION_SPEED, moveRightFrames);
         leftAnimation = new Animation<TextureRegion>(GameInfo.ANIMATION_SPEED, moveLeftFrames);
-        health = gameObjectState.getFloatFromHashMap("health", 100);
-        lives = gameObjectState.getIntFromHashMap("lives", 3);
+        this.health = gameObjectState.getFloatFromHashMap("health", 100);
+        this.lives = gameObjectState.getIntFromHashMap("lives", 3);
         completelyDead = false;
         System.out.println("player health init: " + health);
         // add extra data... spawnradius etc
@@ -133,15 +136,33 @@ public class Player extends GameObject {
         }
     }
 
+    public boolean isKilled() {
+        //System.out.println("from Player: isKilled() reached");
+        if (this.health <= 0) {
+            System.out.println("from Player: isKilled() true");
+            return true;
+        }
+        else {
+            //System.out.println("from Player: isKilled() false");
+            return false;
+        }
+    }
+
     public void killPlayer() {
         System.out.println("from Player: going to kill. Health: " + health + " lives: " + lives);
         if (this.lives > 0) {
             this.lives -= 1;
         }
-        System.out.println("from Player: player killed. Health: " + health + health + " lives: " + lives);
+
+        if (lives == 0) {
+            this.completelyDead = true;
+            System.out.println("from Player: completely dead");
+        }
+        System.out.println("from Player: player killed. Health: " + health + " lives: " + lives);
         this.setX(spawnX);
         this.setY(spawnY);
         this.health = 100;
+        this.justKilled = true;
         //respawnPlayer();
     }
 
@@ -151,6 +172,14 @@ public class Player extends GameObject {
 
     public int getLives() {
         return this.lives;
+    }
+
+    public void setJustKilled(boolean justKilled) {
+        this.justKilled = justKilled;
+    }
+
+    public boolean isJustKilled() {
+        return justKilled;
     }
 
     @Override
@@ -167,6 +196,7 @@ public class Player extends GameObject {
         if (this.health <= 0) {
             killPlayer();
         }
+
         // last two fields scale image if not correct size
         batch.draw(currentFrame, position.x, position.y, getWidth(), getHeight());
     }
