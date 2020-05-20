@@ -47,10 +47,12 @@ public class GameScreen extends ScreenAdapter {
     ArrayList<Bullet> bulletList;
     float bulletTimer;
     String playerDirection;
+    boolean levelBeat;
 
 
     // collisions not working - tiles all come back as null
     public GameScreen(final SecondGame game) {
+        this.levelBeat = false;
         this.game = game;
         this.justReset = false;
         bulletTimer = 0;
@@ -108,6 +110,7 @@ public class GameScreen extends ScreenAdapter {
             // align camera with player object
 
             if (gameObject instanceof Player) {
+                // if respawning, reset health etc
                 if (justReset) {
                     ((Player) gameObject).revivePlayer();
                     justReset = false;
@@ -119,6 +122,7 @@ public class GameScreen extends ScreenAdapter {
                 playerPositionX = gameObject.getPosition().x;
                 playerPositionY = gameObject.getPosition().y;
                 playerDirection = ((Player) gameObject).getDirection();
+                levelBeat = ((Player) gameObject).isLevelBeat();
                 //System.out.println("from GameScreen render, playpos: " + playerPositionX + "," + playerPositionY);
                 updateCamera();
 
@@ -141,12 +145,12 @@ public class GameScreen extends ScreenAdapter {
             System.out.println("from bullet key press, playpos: " + playerPositionX + "," + playerPositionY);
             // facing right
             if ("right".equals(playerDirection)) {
-                bulletList.add(new Bullet(playerPositionX + 20, playerPositionY + 30, "right", camera));
+                bulletList.add(new Bullet(playerPositionX + 20, playerPositionY + 30, "right", camera, gameMap));
             }
 
             //facing left
             else {
-                bulletList.add(new Bullet(playerPositionX - 20, playerPositionY + 30, "left", camera));
+                bulletList.add(new Bullet(playerPositionX - 5, playerPositionY + 30, "left", camera, gameMap));
             }
 
         }
@@ -176,8 +180,21 @@ public class GameScreen extends ScreenAdapter {
                 justReset = true;
                 game.loadScreen(GameState.GAME_OVER);
             }
+        }
 
+        // if level beaten
+        if (levelBeat) {
+            System.out.println("level beat reached in GameScreen");
+            if (level < 2) {
+                level++;
+                game.getOptions().setStartingLevel(level);
+                nextLevel();
+            }
 
+            else {
+                System.out.println("game over reached in gamescreen");
+                game.loadScreen(GameState.END_OF_GAME);
+            }
         }
 
         //System.out.println("current player position: " + playerPositionX + ", " + playerPositionY);
@@ -223,14 +240,17 @@ public class GameScreen extends ScreenAdapter {
 
         camera.update();
         spriteBatch.setProjectionMatrix(camera.combined);
+
+        //draw bullets
         spriteBatch.begin();
-        //spriteBatch.setProjectionMatrix(camera.combined);
+
         for (Bullet bullet : bulletList) {
             if (!bulletList.isEmpty()) {
                 bullet.render(spriteBatch);
             }
 
         }
+
         spriteBatch.end();
         // draw hud background and hud after so it's on top
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -238,6 +258,7 @@ public class GameScreen extends ScreenAdapter {
         shapeRenderer.rect(40, GameInfo.WORLD_HEIGHT - 110, 230, 65);
         shapeRenderer.end();
 
+        //draw health bar
         spriteBatch.setProjectionMatrix(hud.hudStage.getCamera().combined);
         this.hud.setHealth(playerHealth);
         this.hud.setLives(playerLives);
@@ -283,6 +304,11 @@ public class GameScreen extends ScreenAdapter {
             camera.position.y = GameInfo.WORLD_HEIGHT - GameInfo.SCREEN_HEIGHT / 2;
             camera.update();
         }
+    }
+
+    public void nextLevel() {
+        game.setScreen(new GameScreen(game));
+        this.dispose();
     }
 
     @Override

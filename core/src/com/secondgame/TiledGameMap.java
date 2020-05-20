@@ -2,6 +2,7 @@ package com.secondgame;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -13,11 +14,13 @@ public class TiledGameMap extends GameMap {
 
     com.badlogic.gdx.maps.tiled.TiledMap tiledMap;
     OrthogonalTiledMapRenderer tiledMapRenderer;
+    MapProperties mapProperties;
 
     //init
     public TiledGameMap(int mapToLoad) {
         super(mapToLoad);
         tiledMap = new TmxMapLoader().load("maps/level" + mapToLoad + "/level" + mapToLoad + ".tmx");
+        MapProperties mapProperties = tiledMap.getProperties();
         System.out.println("tiledgamemap loading level: " + mapToLoad);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
@@ -70,6 +73,14 @@ public class TiledGameMap extends GameMap {
             }
         }
         return null;
+    }
+
+    @Override
+    public int getMapWidth() {
+        int mapWidthInTiles = mapProperties.get("width", Integer.class);
+        int tileWidthInPixels = mapProperties.get("tilewidth", Integer.class);
+        int mapWidthInPixels = mapWidthInTiles * tileWidthInPixels;
+        return mapWidthInPixels;
     }
 
     @Override

@@ -53,7 +53,7 @@ public abstract class GameMap {
      */
     public abstract TileType getTileTypeByCoordinate(int layer, int col, int row);
 
-    public boolean checkIfCollides(float x, float y, int width, int height) {
+    public boolean checkIfCollidesWithTiles(float x, float y, int width, int height) {
         // check if object collides with with any of the tiles it overlaps - return true if collision happens
         // check borders
         if (checkBorders(x, y, width, height)) {
@@ -74,10 +74,10 @@ public abstract class GameMap {
             for (int column = firstTileY; column < lastTileY; column++) {
                 // go through each layer
                 for (int layer = 0; layer < getLayers(); layer++) {
-                    //System.out.println("from GameMap, checkIfCollides, layer " + layer + " row " + row + " col " +
+                    //System.out.println("from GameMap, checkIfCollidesWithTiles, layer " + layer + " row " + row + " col " +
                     // column);
                     TileType currentTileType = getTileTypeByCoordinate(layer, column, row);
-                    //System.out.println("from GameMap, checkIfCollides, currentTileType: " + currentTileType);
+                    //System.out.println("from GameMap, checkIfCollidesWithTiles, currentTileType: " + currentTileType);
                     if (currentTileType != null && currentTileType.isCollidable()) {
                         return true;
                     }
@@ -122,4 +122,5 @@ public abstract class GameMap {
         return this.getHeight() * TileType.TILE_SIZE;
     }
 
+    public abstract int getMapWidth();
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.secondgame.GameMap;
 
 public class Bullet {
 
@@ -20,17 +21,26 @@ public class Bullet {
     float relativeBulletSpawnY;
     float absBulletSpawnX;
     float absBulletSpawnY;
+    protected GameMap gameMap;
+    int height;
+    int width;
+    float newXPosition;
+
 
 
     public boolean needToRemove = false;
 
-    public Bullet(float x, float y, String direction, OrthographicCamera camera) {
+    public Bullet(float x, float y, String direction, OrthographicCamera camera, GameMap gameMap) {
         this.x = x;
         this.y = y;
+        this.height = 12;
+        this.width = 12;
+        this.newXPosition = x;
         this.absBulletSpawnX = x;
         this.absBulletSpawnY = y;
         this.direction = direction;
         this.camera = camera;
+        this.gameMap = gameMap;
         bulletPos = new Vector3(x, y, 0);
         camera.unproject(bulletPos);
         relativeBulletSpawnX = bulletPos.x;
@@ -43,17 +53,33 @@ public class Bullet {
     public void update(float deltaTime, float gravity) {
         System.out.println("from bullet, bulletpos: " + bulletPos.x + ", " + bulletPos.y);
         System.out.println("pos : " + x + ", " + y);
+
+
         if ("right".equals(direction)) {
-            x += SPEED * deltaTime;
+            newXPosition = x + SPEED * deltaTime;
+            //x += SPEED * deltaTime;
         }
 
         if ("left".equals(direction)) {
-            x -= SPEED * deltaTime;
+            newXPosition = x - SPEED * deltaTime;
+            //x -= SPEED * deltaTime;
         }
-        // if goes out of bounds of screen
-        if ((x > absBulletSpawnX + (Gdx.graphics.getWidth() - relativeBulletSpawnX)) || (x < absBulletSpawnX - (Gdx.graphics.getWidth() - relativeBulletSpawnX))) {
+
+        // if does not collide, move to new position
+        if (!gameMap.checkIfCollidesWithTiles(newXPosition, y, width, height)) {
+            x = newXPosition;
+        }
+
+        // if collides, remove it
+
+        if (gameMap.checkIfCollidesWithTiles(newXPosition, y, width, height)) {
             needToRemove = true;
         }
+        // if goes out of bounds of screen
+        /*if ((x > absBulletSpawnX + (Gdx.graphics.getWidth() - relativeBulletSpawnX)) || (x < absBulletSpawnX - (relativeBulletSpawnX))) {
+            needToRemove = true;
+        }*/
+
     }
 
     public void render(SpriteBatch spriteBatch) {

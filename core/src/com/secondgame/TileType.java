@@ -14,7 +14,8 @@ public enum TileType {
     LEVEL_2_BACKGROUND(2, false, false, "level2bg"),
     LEVEL_3_BACKGROUND(3, false, false, "level3bg"),
     BLACK_BLOCK(4, true, false, "blackblock"),
-    SPIKE(5, true, true, "spike");
+    SPIKE(5, true, true, "spike"),
+    PORTAL(6, true, false, "portal");
 
     public static final int TILE_SIZE = 32;
 
@@ -45,6 +46,10 @@ public enum TileType {
 
     public boolean isCollidable() {
         return collidable;
+    }
+
+    public boolean isPortal() {
+        return this.id == 6;
     }
 
     public boolean doesKill() {

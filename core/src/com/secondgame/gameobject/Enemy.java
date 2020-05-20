@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.secondgame.GameInfo;
 import com.secondgame.GameMap;
 
-public class Player extends GameObject {
+public class Enemy extends GameObject {
 
     private static int speed = 180;
     private static int jumpVelocity = 6;
@@ -51,7 +51,7 @@ public class Player extends GameObject {
         moveAnimationSheet = new Texture(Gdx.files.internal("images/playerspritesheet.png"));
         System.out.println("moveAnimationSheet width: " + moveAnimationSheet.getWidth() + " height: " + moveAnimationSheet.getHeight());
         TextureRegion[][] tmp = TextureRegion.split(moveAnimationSheet,moveAnimationSheet.getWidth() / FRAME_COLS,
-                        moveAnimationSheet.getHeight() / FRAME_ROWS); // 4 col, 2 row
+                moveAnimationSheet.getHeight() / FRAME_ROWS); // 4 col, 2 row
         TextureRegion[] moveRightFrames = new TextureRegion[FRAME_COLS]; // top row
         TextureRegion[] moveLeftFrames = new TextureRegion[FRAME_COLS]; // bottom row
         for (int i = 0; i < FRAME_COLS; i++) {

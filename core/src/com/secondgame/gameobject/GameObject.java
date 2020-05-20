@@ -5,8 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.secondgame.GameMap;
 import com.secondgame.TileType;
 
-import java.util.HashMap;
-
 public abstract class GameObject {
     protected Vector2 position;
     protected GameObjectType gameObjectType;
@@ -34,7 +32,7 @@ public abstract class GameObject {
         float newYPosition = position.y + this.velocityY * deltaTime;
 
         // if collision happens with map
-        if (gameMap.checkIfCollides(position.x, newYPosition, getWidth(), getHeight())) {
+        if (gameMap.checkIfCollidesWithTiles(position.x, newYPosition, getWidth(), getHeight())) {
             // if hit ground
             if (velocityY < 0) {
                 // put to nearest bottom of floor
@@ -47,8 +45,13 @@ public abstract class GameObject {
             // check if damages player
             if ((gameMap.getTileTypeByLocation(1, position.x, newYPosition)) != null) {
                 TileType collidingTileType = gameMap.getTileTypeByLocation(1, position.x, newYPosition);
+                if (collidingTileType.isPortal()) {
+                    if (this instanceof  Player) {
+                        ((Player) this).setLevelBeat(true);
+                    }
+                }
                 if (collidingTileType.doesKill()) {
-                    System.out.println("from GameObject: colliding with deadly tile of type " + collidingTileType);
+                    //System.out.println("from GameObject: colliding with deadly tile of type " + collidingTileType);
                     if (this instanceof Player) {
                         ((Player) this).damagePlayer(20);
                     }
@@ -71,7 +74,7 @@ public abstract class GameObject {
     protected void moveX(float amountToMove) {
         float newXPosition = this.position.x + amountToMove;
         // only move if no collision
-        if (!gameMap.checkIfCollides(newXPosition, position.y, getWidth(), getWidth())) {
+        if (!gameMap.checkIfCollidesWithTiles(newXPosition, position.y, getWidth(), getWidth())) {
             this.position.x = newXPosition;
         }
     }
