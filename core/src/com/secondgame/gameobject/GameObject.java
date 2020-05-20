@@ -133,5 +133,5 @@ public abstract class GameObject {
 
   /*  public abstract boolean isCompletelyDead();
 
-    public abstract boolean killPlayer();*/
+    public abstract boolean killEnemy();*/
 }

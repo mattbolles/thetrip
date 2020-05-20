@@ -9,13 +9,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.secondgame.GameInfo;
 import com.secondgame.GameMap;
+import com.secondgame.Hitbox;
 
 public class Enemy extends GameObject {
 
     private static int speed = 180;
     private static int jumpVelocity = 6;
 
-    Texture playerImage;
+    Texture enemyImage;
     Animation<TextureRegion> rightAnimation;
     Animation<TextureRegion> leftAnimation;
     Texture moveAnimationSheet;
@@ -32,7 +33,12 @@ public class Enemy extends GameObject {
     float spawnY;
     boolean justKilled;
     boolean levelBeat;
+    float x;
+    float y;
+    int width;
+    int height;
 
+    Hitbox hitbox;
 
     /*public Player(float x, float y, GameMap gameMap) {
         super(x, y, GameObjectType.PLAYER, gameMap);
@@ -42,77 +48,27 @@ public class Enemy extends GameObject {
     @Override
     public void create(GameObjectState gameObjectState, GameObjectType gameObjectType, GameMap gameMap) {
         super.create(gameObjectState, gameObjectType, gameMap);
-        this.levelBeat = false;
-        this.spawnX = 40;
-        this.spawnY = 320;
-        this.justKilled = false;
+        this.x = gameObjectState.getX();
+        this.y = gameObjectState.getY();
+        this.width = getWidth();
+        this.height = getHeight();
+        this.hitbox = new Hitbox(x, y, width, height);
         direction = "right";
-        playerImage = new Texture("images/player.png");
-        moveAnimationSheet = new Texture(Gdx.files.internal("images/playerspritesheet.png"));
-        System.out.println("moveAnimationSheet width: " + moveAnimationSheet.getWidth() + " height: " + moveAnimationSheet.getHeight());
-        TextureRegion[][] tmp = TextureRegion.split(moveAnimationSheet,moveAnimationSheet.getWidth() / FRAME_COLS,
-                moveAnimationSheet.getHeight() / FRAME_ROWS); // 4 col, 2 row
-        TextureRegion[] moveRightFrames = new TextureRegion[FRAME_COLS]; // top row
-        TextureRegion[] moveLeftFrames = new TextureRegion[FRAME_COLS]; // bottom row
-        for (int i = 0; i < FRAME_COLS; i++) {
-            moveRightFrames[i] = tmp[0][i];
-            moveLeftFrames[i] = tmp[1][i];
-        }
-
-        rightAnimation = new Animation<TextureRegion>(GameInfo.ANIMATION_SPEED, moveRightFrames);
-        leftAnimation = new Animation<TextureRegion>(GameInfo.ANIMATION_SPEED, moveLeftFrames);
+        enemyImage = new Texture("images/enemy1.png");
         this.health = gameObjectState.getFloatFromHashMap("health", 100);
         this.lives = gameObjectState.getIntFromHashMap("lives", 3);
-        completelyDead = false;
+        this.completelyDead = false;
         System.out.println("player health init: " + health);
         // add extra data... spawnradius etc
     }
 
     @Override
     public void update(float deltaTime, float gravity) {
-        // going to need seperate control data structure - single jump button, etc
-        // unify it basically - controller support - maybe implement customizable controls
-
-
-        // hold shift to run
-        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-            speed = 240;
+        if (health <= 0) {
+            this. completelyDead = true;
         }
 
-
-        // reset speed after run
-        if (!Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && onGround) {
-            speed = 180;
-        }
-
-        //initial jump from ground
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && onGround) {
-            this.velocityY += jumpVelocity * getWeight();
-        }
-
-        //continue jumping if key is still pressed in air (hence velocityY > 0)
-        else if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && !onGround && this.velocityY > 0) {
-            this.velocityY += jumpVelocity * getWeight() * deltaTime;
-        }
-
-        // applies gravity
-        super.update(deltaTime, gravity);
-
-        //move left
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            moveX(-speed * deltaTime);
-            direction = "left";
-        }
-
-        // move right
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            moveX(speed * deltaTime);
-            direction = "right";
-        }
-
-        if (lives == 0) {
-            completelyDead = true;
-        }
+        //hitbox.move(x, y);
         //System.out.println("player health: " + health);
     }
 
@@ -130,17 +86,8 @@ public class Enemy extends GameObject {
         //this.position.set(spawnX, spawnY);
     }
 
-    public void revivePlayer() {
-        System.out.println("Player revivePlayer reach");
-        this.health = 100;
-        this.lives = 3;
-        this.setX(spawnX);
-        this.setY(spawnY);
-        System.out.println("after revive, health: " + health + " lives: " + lives);
-        //this.position.set(spawnX, spawnY);
-    }
 
-    public void damagePlayer(float amountToDamage) {
+    public void damageEnemy(float amountToDamage) {
         if (this.health > 0) {
             this.health -= amountToDamage;
         }
@@ -157,7 +104,7 @@ public class Enemy extends GameObject {
     public boolean isKilled() {
         //System.out.println("from Player: isKilled() reached");
         if (this.health <= 0) {
-            System.out.println("from Player: isKilled() true");
+            System.out.println("from Enemy: isKilled() true");
             return true;
         }
         else {
@@ -166,8 +113,8 @@ public class Enemy extends GameObject {
         }
     }
 
-    public void killPlayer() {
-        System.out.println("from Player: going to kill. Health: " + health + " lives: " + lives);
+    public void killEnemy() {
+        System.out.println("from Enemy: going to kill. Health: " + health + " lives: " + lives);
         if (this.lives > 0) {
             this.lives -= 1;
         }
@@ -206,21 +153,7 @@ public class Enemy extends GameObject {
 
     @Override
     public void render(SpriteBatch batch) {
-        stateTime += Gdx.graphics.getDeltaTime(); // accumulate time
-        TextureRegion currentFrame = leftAnimation.getKeyFrame(stateTime, true);
-        if ("left".equals(direction)) {
-            currentFrame = leftAnimation.getKeyFrame(stateTime, true);
-        }
-
-        else if ("right".equals(direction)) {
-            currentFrame = rightAnimation.getKeyFrame(stateTime, true);
-        }
-        if (this.health <= 0) {
-            killPlayer();
-        }
-
-        // last two fields scale image if not correct size
-        batch.draw(currentFrame, position.x, position.y, getWidth(), getHeight());
+        batch.draw(enemyImage, position.x, position.y, getWidth(), getHeight());
     }
 
     @Override
@@ -229,4 +162,10 @@ public class Enemy extends GameObject {
         //update extra data here if needed
         return gameObjectState;
     }
+
+    public Hitbox getHitbox() {
+        return hitbox;
+    }
+
+
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.secondgame.GameMap;
+import com.secondgame.Hitbox;
 
 public class Bullet {
 
@@ -25,16 +26,19 @@ public class Bullet {
     int height;
     int width;
     float newXPosition;
+    Hitbox hitbox;
 
 
 
     public boolean needToRemove = false;
 
     public Bullet(float x, float y, String direction, OrthographicCamera camera, GameMap gameMap) {
+
         this.x = x;
         this.y = y;
         this.height = 12;
         this.width = 12;
+        this.hitbox = new Hitbox(x, y, width, height);
         this.newXPosition = x;
         this.absBulletSpawnX = x;
         this.absBulletSpawnY = y;
@@ -51,8 +55,8 @@ public class Bullet {
     }
 
     public void update(float deltaTime, float gravity) {
-        System.out.println("from bullet, bulletpos: " + bulletPos.x + ", " + bulletPos.y);
-        System.out.println("pos : " + x + ", " + y);
+        //System.out.println("from bullet, bulletpos: " + bulletPos.x + ", " + bulletPos.y);
+        //System.out.println("pos : " + x + ", " + y);
 
 
         if ("right".equals(direction)) {
@@ -70,6 +74,8 @@ public class Bullet {
             x = newXPosition;
         }
 
+        hitbox.move(x, y);
+
         // if collides, remove it
 
         if (gameMap.checkIfCollidesWithTiles(newXPosition, y, width, height)) {
@@ -86,5 +92,12 @@ public class Bullet {
         spriteBatch.draw(bulletTexture, x, y,12, 12);
     }
 
+    public Hitbox getHitbox() {
+        return hitbox;
+    }
+
+    public void setNeedToRemove(boolean needToRemove) {
+        this.needToRemove = needToRemove;
+    }
 
 }

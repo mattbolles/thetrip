@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.secondgame.gameobject.Bullet;
+import com.secondgame.gameobject.Enemy;
 import com.secondgame.gameobject.GameObject;
 import com.secondgame.gameobject.Player;
 
@@ -106,6 +107,7 @@ public class GameScreen extends ScreenAdapter {
         //spriteBatch.end();
         // update in relation to player object
         bulletTimer += delta;
+        ArrayList<Enemy> enemyToKill = new ArrayList<Enemy>();
         for (GameObject gameObject : gameMap.gameObjects) {
             // align camera with player object
 
@@ -136,7 +138,20 @@ public class GameScreen extends ScreenAdapter {
                     ((Player) gameObject).setCompletelyDead(false);
                 }
             }
+
+            // if enemy is dead, prepare to remove it
+
+            if (gameObject instanceof Enemy) {
+                if (((Enemy) gameObject).isCompletelyDead()) {
+                    System.out.println("from Gamescreen: enemy killed");
+                    enemyToKill.add((Enemy) gameObject);
+                }
+            }
+
         }
+        gameMap.gameObjects.removeAll(enemyToKill);
+
+
 
         // E to shoot - add inout handling method later
         // delay shooting
@@ -196,6 +211,20 @@ public class GameScreen extends ScreenAdapter {
                 game.loadScreen(GameState.END_OF_GAME);
             }
         }
+        stateTime += delta;
+        // after update check for collisions, before rendering
+        for (Bullet bullet : bulletList) {
+            for (GameObject gameObject : gameMap.gameObjects) {
+                if (gameObject instanceof Enemy) {
+                    // if bullet hit enemy
+                    if (bullet.getHitbox().checkCollision(((Enemy) gameObject).getHitbox())) {
+                        System.out.println("from gamescreen: bullet hit enemy");
+                        bullet.setNeedToRemove(true);
+                        ((Enemy) gameObject).damageEnemy(20);
+                    }
+                }
+            }
+        }
 
         //System.out.println("current player position: " + playerPositionX + ", " + playerPositionY);
         //System.out.println("current cam position: " + camera.position.x + ", " + camera.position.y);
@@ -208,7 +237,7 @@ public class GameScreen extends ScreenAdapter {
 
        // System.out.println("FPS: " + 1/delta);
         // if clicked
-        stateTime += delta;
+
         /*if (Gdx.input.isTouched()) {
             // drag gameMap
             camera.translate(-Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
@@ -228,6 +257,7 @@ public class GameScreen extends ScreenAdapter {
 
             }
         }*/
+
 
 
 
