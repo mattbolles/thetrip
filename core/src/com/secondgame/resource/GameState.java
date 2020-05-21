@@ -1,4 +1,4 @@
-package com.secondgame;
+package com.secondgame.resource;
 
 public class GameState {
     public static final String END_OF_GAME = "endofgame";

@@ -1,17 +1,16 @@
-package com.secondgame;
+package com.secondgame.map;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.secondgame.gameobject.GameObject;
 import com.secondgame.gameobject.GameObjectLoader;
-import com.secondgame.gameobject.Player;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public abstract class GameMap {
 
-    protected ArrayList<GameObject> gameObjects;
+    public ArrayList<GameObject> gameObjects;
 
     public GameMap(int mapToLoad) {
         gameObjects = new ArrayList<GameObject>();

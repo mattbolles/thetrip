@@ -1,4 +1,4 @@
-package com.secondgame;
+package com.secondgame.resource;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;

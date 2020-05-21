@@ -1,18 +1,15 @@
 package com.secondgame;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.Preferences.*;
+import com.secondgame.resource.GameOptions;
 
 //main class that initializes and loads everything
 public class SecondGame extends Game {
 
-    private GameOptions theTripOptions;
+    private GameOptions gameOptions;
     private LoadingScreen loadingScreen;
     private IntroScreen introScreen;
     private OptionsScreen optionsScreen;
@@ -34,7 +31,7 @@ public class SecondGame extends Game {
         batch = new SpriteBatch();
         loadingScreen = new LoadingScreen(this);
 
-        theTripOptions = new GameOptions();
+        gameOptions = new GameOptions();
         //setScreen(new LoadingScreen(this));
         setScreen(loadingScreen);
     }
@@ -50,7 +47,7 @@ public class SecondGame extends Game {
     }
 
     public GameOptions getOptions() {
-        return this.theTripOptions;
+        return this.gameOptions;
     }
 
     public void loadScreen(String screenToDisplay) {

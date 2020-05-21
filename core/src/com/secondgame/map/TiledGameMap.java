@@ -1,4 +1,4 @@
-package com.secondgame;
+package com.secondgame.map;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

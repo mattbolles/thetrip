@@ -2,8 +2,8 @@ package com.secondgame.gameobject;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.secondgame.GameMap;
-import com.secondgame.TileType;
+import com.secondgame.map.GameMap;
+import com.secondgame.map.TileType;
 
 public abstract class GameObject {
     protected Vector2 position;

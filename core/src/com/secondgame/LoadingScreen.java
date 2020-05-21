@@ -1,6 +1,7 @@
 package com.secondgame;
 
 import com.badlogic.gdx.ScreenAdapter;
+import com.secondgame.resource.GameState;
 
 public class LoadingScreen extends ScreenAdapter {
     private SecondGame game;

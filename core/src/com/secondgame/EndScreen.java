@@ -1,12 +1,13 @@
 package com.secondgame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.secondgame.resource.GameInfo;
+import com.secondgame.resource.GameState;
 
 public class EndScreen extends ScreenAdapter {
     private SecondGame game;

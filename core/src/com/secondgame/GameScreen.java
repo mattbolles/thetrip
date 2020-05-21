@@ -13,7 +13,13 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.secondgame.gameobject.*;
+import com.secondgame.map.GameMap;
+import com.secondgame.map.TiledGameMap;
+import com.secondgame.resource.GameInfo;
+import com.secondgame.resource.GameState;
+import com.secondgame.resource.Hud;
 import com.secondgame.resource.SoundPlayer;
+import com.secondgame.weapon.Bullet;
 
 import java.util.ArrayList;
 

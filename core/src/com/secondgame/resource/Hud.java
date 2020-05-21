@@ -1,4 +1,4 @@
-package com.secondgame;
+package com.secondgame.resource;
 
 //heads up display, displaying health and lives
 

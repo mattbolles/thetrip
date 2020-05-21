@@ -2,9 +2,8 @@ package com.secondgame.gameobject;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
-import com.secondgame.GameMap;
+import com.secondgame.map.GameMap;
 
 import java.util.ArrayList;
 

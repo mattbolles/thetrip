@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.secondgame.GameInfo;
-import com.secondgame.GameMap;
+import com.secondgame.resource.GameInfo;
+import com.secondgame.map.GameMap;
 import com.secondgame.Hitbox;
 
 public class Enemy extends GameObject {
@@ -51,10 +51,7 @@ public class Enemy extends GameObject {
         this.width = getWidth();
         this.height = getHeight();
         this.hitbox = new Hitbox(x, y, width, height);
-        direction = "right";
-        enemyImage = new Texture("images/enemy1.png");
         moveAnimationSheet = new Texture(Gdx.files.internal("images/enemyspritesheet.png"));
-        System.out.println("moveAnimationSheet width: " + moveAnimationSheet.getWidth() + " height: " + moveAnimationSheet.getHeight());
         TextureRegion[][] tmp = TextureRegion.split(moveAnimationSheet,moveAnimationSheet.getWidth() / FRAME_COLS,
                 moveAnimationSheet.getHeight() / FRAME_ROWS); // 4 col, 1 row
         TextureRegion[] animationFrames = new TextureRegion[FRAME_COLS];

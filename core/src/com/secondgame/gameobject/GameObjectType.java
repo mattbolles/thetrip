@@ -3,7 +3,7 @@ package com.secondgame.gameobject;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
-import com.secondgame.GameMap;
+import com.secondgame.map.GameMap;
 
 import java.util.HashMap;
 
