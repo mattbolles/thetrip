@@ -12,10 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.secondgame.gameobject.Bullet;
-import com.secondgame.gameobject.Enemy;
-import com.secondgame.gameobject.GameObject;
-import com.secondgame.gameobject.Player;
+import com.secondgame.gameobject.*;
 
 import java.util.ArrayList;
 
@@ -111,6 +108,7 @@ public class GameScreen extends ScreenAdapter {
         bulletTimer += delta;
         damageTimer += delta;
         ArrayList<Enemy> enemyToKill = new ArrayList<Enemy>();
+        ArrayList<Boss> bossToKill = new ArrayList<Boss>();
         for (GameObject gameObject : gameMap.gameObjects) {
             // align camera with player object
 
@@ -122,6 +120,13 @@ public class GameScreen extends ScreenAdapter {
                         if (anotherGameObject instanceof Enemy) {
                             if (((Player) gameObject).getHitbox().checkCollision(((Enemy) anotherGameObject).getHitbox())) {
                                 ((Player) gameObject).damagePlayer(5);
+                            }
+                        }
+
+                        // if collide with boss
+                        if (anotherGameObject instanceof Boss) {
+                            if (((Player) gameObject).getHitbox().checkCollision(((Boss) anotherGameObject).getHitbox())) {
+                                ((Player) gameObject).damagePlayer(10);
                             }
                         }
                     }
@@ -163,10 +168,20 @@ public class GameScreen extends ScreenAdapter {
                 }
             }
 
+            //if boss dead, prepare to remove
+            if (gameObject instanceof Boss) {
+                if (((Boss) gameObject).isCompletelyDead()) {
+                    System.out.println("from Gamescreen: boss killed");
+                    bossToKill.add((Boss) gameObject);
+                }
+            }
+
 
 
         }
+        // remove dead enemies / boss
         gameMap.gameObjects.removeAll(enemyToKill);
+        gameMap.gameObjects.removeAll(bossToKill);
 
 
 
@@ -228,6 +243,8 @@ public class GameScreen extends ScreenAdapter {
 
             else {
                 System.out.println("game finish reached in gamescreen");
+                soundPlayer.stopMusic();
+                game.loadScreen(GameState.END_OF_GAME);
             }
         }
         stateTime += delta;
@@ -240,6 +257,15 @@ public class GameScreen extends ScreenAdapter {
                         System.out.println("from gamescreen: bullet hit enemy");
                         bullet.setNeedToRemove(true);
                         ((Enemy) gameObject).damageEnemy(20);
+                    }
+                }
+
+                if (gameObject instanceof Boss) {
+                    // if bullet hit boss
+                    if (bullet.getHitbox().checkCollision(((Boss) gameObject).getHitbox())) {
+                        System.out.println("from gamescreen: bullet hit enemy");
+                        bullet.setNeedToRemove(true);
+                        ((Boss) gameObject).damageBoss(20);
                     }
                 }
             }

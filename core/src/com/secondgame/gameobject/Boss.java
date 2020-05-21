@@ -65,7 +65,7 @@ public class Boss extends GameObject {
         this.health = gameObjectState.getFloatFromHashMap("health", 100);
         this.lives = gameObjectState.getIntFromHashMap("lives", 3);
         this.completelyDead = false;
-        System.out.println("player health init: " + health);
+        //System.out.println("boss health init: " + health);
         // add extra data... spawnradius etc
     }
 
@@ -94,7 +94,7 @@ public class Boss extends GameObject {
     }
 
 
-    public void damageEnemy(float amountToDamage) {
+    public void damageBoss(float amountToDamage) {
         if (this.health > 0) {
             this.health -= amountToDamage;
         }
@@ -120,23 +120,6 @@ public class Boss extends GameObject {
         }
     }
 
-    public void killEnemy() {
-        System.out.println("from Enemy: going to kill. Health: " + health + " lives: " + lives);
-        if (this.lives > 0) {
-            this.lives -= 1;
-        }
-
-        if (lives == 0) {
-            this.completelyDead = true;
-            System.out.println("from Player: completely dead");
-        }
-        System.out.println("from Player: player killed. Health: " + health + " lives: " + lives);
-        this.setX(spawnX);
-        this.setY(spawnY);
-        this.health = 100;
-        this.justKilled = true;
-        //respawnPlayer();
-    }
 
     public float getHealth() {
         return this.health;
