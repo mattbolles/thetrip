@@ -1,4 +1,4 @@
-package com.secondgame.screen;
+package com.secondgame;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.secondgame.resource.GameState;

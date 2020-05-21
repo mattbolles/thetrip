@@ -1,6 +1,5 @@
 package com.secondgame;
 
-import com.secondgame.screen.TheTrip;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 

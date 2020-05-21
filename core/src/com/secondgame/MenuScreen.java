@@ -1,8 +1,9 @@
-package com.secondgame.screen;
+package com.secondgame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -11,11 +12,12 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.secondgame.resource.GameInfo;
 import com.secondgame.resource.GameState;
 
-public class GameOverScreen extends ScreenAdapter {
+public class MenuScreen extends ScreenAdapter {
+
     private TheTrip game;
     private Stage stage;
 
-    public GameOverScreen(TheTrip game) {
+    public MenuScreen(TheTrip game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
 
@@ -24,11 +26,18 @@ public class GameOverScreen extends ScreenAdapter {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        Label gameOver = new Label("GAME OVER", GameInfo.LABEL_STYLE_36);
-        gameOver.setPosition(Gdx.graphics.getWidth() / 2 - gameOver.getWidth() / 2,
-                Gdx.graphics.getHeight() * 2 / 3 + gameOver.getHeight() / 3);
+        // logo
+        Texture logoTexture = new Texture(Gdx.files.internal("images/logo.png"));
+        Image logo = new Image(logoTexture);
+        logo.setPosition(Gdx.graphics.getWidth() / 2 -logo.getWidth() / 2,
+                Gdx.graphics.getHeight() * 2 / 3 + logo.getHeight() / 3);
 
-        stage.addActor(gameOver);
+        stage.addActor(logo);
+        // add my name
+        Label myName = new Label("by Matt Bolles", GameInfo.LABEL_STYLE_18);
+        myName.setPosition(Gdx.graphics.getWidth() / 2 - myName.getWidth() / 2,
+                logo.getY() - myName.getHeight() * 2);
+        stage.addActor(myName);
         // create and show menu
         Table menu =  new Table();
 
@@ -40,14 +49,14 @@ public class GameOverScreen extends ScreenAdapter {
         // creat and show menu buttons
         // create custom skin later
         Skin skin = new Skin(Gdx.files.internal("skins/neon/skin/neon-ui.json"));
-        TextButton retryButton = new TextButton("Retry", skin);
-        TextButton  menuButton = new TextButton("Menu", skin);
+        TextButton startButton = new TextButton("Start", skin);
+        TextButton  optionsButton = new TextButton("Options", skin);
         TextButton exitButton = new TextButton("Exit", skin);
         // add buttons
         menu.row().pad(50, 0, 0, 0);
-        menu.add(retryButton).fillX().uniformX(); // fill table width, align with other buttons
+        menu.add(startButton).fillX().uniformX(); // fill table width, align with other buttons
         menu.row().pad(10, 0, 0, 0); // add spacing to bottom of button
-        menu.add(menuButton).fillX().uniformX();
+        menu.add(optionsButton).fillX().uniformX();
         menu.row().pad(10, 0, 0, 0); // add spacing
         menu.add(exitButton).fillX().uniformX();
 
@@ -60,18 +69,17 @@ public class GameOverScreen extends ScreenAdapter {
         });
 
         // add start button action - change after option given to select level
-        retryButton.addListener(new ChangeListener() {
+        startButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 game.setScreen(new GameScreen(game));
-                //game.loadScreen(GameState.GAME);
             }
         });
 
-        menuButton.addListener(new ChangeListener() {
+        optionsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.loadScreen(GameState.MENU);
+                game.loadScreen(GameState.OPTIONS);
             }
         });
     }
@@ -94,6 +102,5 @@ public class GameOverScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         stage.dispose();
-        super.dispose();
     }
 }

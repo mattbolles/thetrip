@@ -1,10 +1,9 @@
-package com.secondgame.screen;
+package com.secondgame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.secondgame.resource.GameOptions;
-import com.secondgame.screen.*;
 
 //main class that initializes and loads everything
 public class TheTrip extends Game {
