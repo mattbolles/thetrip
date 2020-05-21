@@ -5,16 +5,16 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.secondgame.resource.GameInfo;
 import com.secondgame.resource.GameState;
 
 public class IntroScreen extends ScreenAdapter {
+    float timer;
     private TheTrip game;
     private Stage stage1;
     private Stage stage2;
-    float timer;
 
     public IntroScreen(TheTrip game) {
         this.game = game;
@@ -45,7 +45,7 @@ public class IntroScreen extends ScreenAdapter {
         System.out.println("timer: " + timer);
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //skip intro if any key pressed or mouse clicked
+        //skip intro if any key pressed\
         if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
             game.loadScreen(GameState.MENU);
         }

@@ -13,8 +13,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Hud {
     public Stage hudStage;
-    private Viewport hudViewport;
-    private OrthographicCamera camera;
 
     private float health;
     private Integer lives;
@@ -23,16 +21,15 @@ public class Hud {
     Label healthNumLabel;
     Label livesLabel;
     Label healthLabel;
-    //private ShapeRenderer shapeRenderer;
 
 
     public Hud(SpriteBatch spriteBatch) {
         health = 100;
         lives = 3;
         //shapeRenderer = new ShapeRenderer();
-        camera = new OrthographicCamera();
+        OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(false, GameInfo.SCREEN_WIDTH, GameInfo.SCREEN_HEIGHT);
-        hudViewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Viewport hudViewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         hudStage = new Stage(hudViewport, spriteBatch);
 
         Table hud = new Table();
@@ -48,7 +45,6 @@ public class Hud {
         hud.add(livesNumLabel).left();
         hud.row().pad(20, 50 , 0, 0);
         hud.add(healthLabel).right();
-        //hud.add(healthNumLabel).left();
 
         hudStage.addActor(hud);
         hud.left();

@@ -11,7 +11,8 @@ public class Bullet {
 
     public static final int SPEED = 500;
     private static Texture bulletTexture;
-
+    public boolean needToRemove = false;
+    protected GameMap gameMap;
     float x;
     float y;
     String direction;
@@ -21,15 +22,10 @@ public class Bullet {
     float relativeBulletSpawnY;
     float absBulletSpawnX;
     float absBulletSpawnY;
-    protected GameMap gameMap;
     int height;
     int width;
     float newXPosition;
     Hitbox hitbox;
-
-
-
-    public boolean needToRemove = false;
 
     public Bullet(float x, float y, String direction, OrthographicCamera camera, GameMap gameMap) {
 
@@ -54,18 +50,13 @@ public class Bullet {
     }
 
     public void update(float deltaTime, float gravity) {
-        //System.out.println("from bullet, bulletpos: " + bulletPos.x + ", " + bulletPos.y);
-        //System.out.println("pos : " + x + ", " + y);
-
 
         if ("right".equals(direction)) {
             newXPosition = x + SPEED * deltaTime;
-            //x += SPEED * deltaTime;
         }
 
         if ("left".equals(direction)) {
             newXPosition = x - SPEED * deltaTime;
-            //x -= SPEED * deltaTime;
         }
 
         // if does not collide, move to new position
@@ -73,6 +64,7 @@ public class Bullet {
             x = newXPosition;
         }
 
+        //update hitbox
         this.hitbox.move(x, y);
 
         // if collides, remove it
@@ -80,15 +72,11 @@ public class Bullet {
         if (gameMap.checkIfCollidesWithTiles(newXPosition, y, width, height) == 1) {
             needToRemove = true;
         }
-        // if goes out of bounds of screen
-        /*if ((x > absBulletSpawnX + (Gdx.graphics.getWidth() - relativeBulletSpawnX)) || (x < absBulletSpawnX - (relativeBulletSpawnX))) {
-            needToRemove = true;
-        }*/
 
     }
 
     public void render(SpriteBatch spriteBatch) {
-        spriteBatch.draw(bulletTexture, x, y,12, 12);
+        spriteBatch.draw(bulletTexture, x, y, 12, 12);
     }
 
     public Hitbox getHitbox() {

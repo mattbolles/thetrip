@@ -5,7 +5,10 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.secondgame.resource.GameInfo;
@@ -30,7 +33,7 @@ public class GameOverScreen extends ScreenAdapter {
 
         stage.addActor(gameOver);
         // create and show menu
-        Table menu =  new Table();
+        Table menu = new Table();
 
         menu.setFillParent(true);
         //menu.setDebug(true);
@@ -41,7 +44,7 @@ public class GameOverScreen extends ScreenAdapter {
         // create custom skin later
         Skin skin = new Skin(Gdx.files.internal("skins/neon/skin/neon-ui.json"));
         TextButton retryButton = new TextButton("Retry", skin);
-        TextButton  menuButton = new TextButton("Menu", skin);
+        TextButton menuButton = new TextButton("Menu", skin);
         TextButton exitButton = new TextButton("Exit", skin);
         // add buttons
         menu.row().pad(50, 0, 0, 0);

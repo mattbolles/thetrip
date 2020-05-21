@@ -35,10 +35,9 @@ public class OptionsScreen extends ScreenAdapter {
         // create and show menu
         Table optionsMenu = new Table();
         optionsMenu.setFillParent(true);
-        //optionsMenu.setDebug(true);
         stage.addActor(optionsMenu);
-        // create custom skin later
         Skin skin = new Skin(Gdx.files.internal("skins/neon/skin/neon-ui.json"));
+
         // create and show option buttons and sliders
         // music volume
         final Slider musicVolumeSlider = new Slider(0f, 1f, 0.01f, false, skin);

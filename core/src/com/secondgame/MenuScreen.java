@@ -29,7 +29,7 @@ public class MenuScreen extends ScreenAdapter {
         // logo
         Texture logoTexture = new Texture(Gdx.files.internal("images/logo.png"));
         Image logo = new Image(logoTexture);
-        logo.setPosition(Gdx.graphics.getWidth() / 2 -logo.getWidth() / 2,
+        logo.setPosition(Gdx.graphics.getWidth() / 2 - logo.getWidth() / 2,
                 Gdx.graphics.getHeight() * 2 / 3 + logo.getHeight() / 3);
 
         stage.addActor(logo);
@@ -39,18 +39,15 @@ public class MenuScreen extends ScreenAdapter {
                 logo.getY() - myName.getHeight() * 2);
         stage.addActor(myName);
         // create and show menu
-        Table menu =  new Table();
+        Table menu = new Table();
 
         menu.setFillParent(true);
-        //menu.setDebug(true);
-        /*menu.setPosition(Gdx.graphics.getWidth() / 2 - menu.getWidth() / 2,
-                Gdx.graphics.getHeight() * 2 / 3 - menu.getHeight() / 2);*/
         stage.addActor(menu);
         // creat and show menu buttons
         // create custom skin later
         Skin skin = new Skin(Gdx.files.internal("skins/neon/skin/neon-ui.json"));
         TextButton startButton = new TextButton("Start", skin);
-        TextButton  optionsButton = new TextButton("Options", skin);
+        TextButton optionsButton = new TextButton("Options", skin);
         TextButton exitButton = new TextButton("Exit", skin);
         // add buttons
         menu.row().pad(50, 0, 0, 0);
