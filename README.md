@@ -1,7 +1,7 @@
 # csc413-SecondGame
 
 ## Student Name  : Matt Bolles
-## Student ID    : 913249017
+## Student ID    : 913249017 Ultimate 2019.3
 ## Java version: 8
 
 ## [Link to Jar (exceeds Github file size limit)](https://www.dropbox.com/s/lfkidxll84tli4w/TheTrip.jar?dl=0)
