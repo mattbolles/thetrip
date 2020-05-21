@@ -57,7 +57,6 @@ public class Player extends GameObject {
         this.justKilled = false; //d
         this.hitbox = new Hitbox(x, y, width, height);
         direction = "right";
-        playerImage = new Texture("images/player.png");
         moveAnimationSheet = new Texture(Gdx.files.internal("images/playerspritesheet.png"));
         System.out.println("moveAnimationSheet width: " + moveAnimationSheet.getWidth() + " height: " + moveAnimationSheet.getHeight());
         TextureRegion[][] tmp = TextureRegion.split(moveAnimationSheet,moveAnimationSheet.getWidth() / FRAME_COLS,
