@@ -8,10 +8,10 @@ import com.secondgame.TheTrip;
 
 public class SoundPlayer {
 
-    TheTrip game;
     public static AssetManager assetManager = new AssetManager();
     private static Music backgroundMusic = null;
     public float volume;
+    TheTrip game;
 
 
     public SoundPlayer(TheTrip game) {
@@ -19,9 +19,8 @@ public class SoundPlayer {
     }
 
 
-
     public static void init() {
-        // load music files - change to "i < 4" when every level music added
+        // load music files
         for (int i = 1; i < 2; i++) {
             assetManager.load(Gdx.files.internal("music/level" + i + ".mp3").path(), Sound.class);
         }

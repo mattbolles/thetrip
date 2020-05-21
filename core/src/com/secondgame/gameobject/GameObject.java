@@ -12,12 +12,6 @@ public abstract class GameObject {
     protected GameMap gameMap;
     protected boolean onGround = false;
 
-    /*public GameObject(float x, float y, GameObjectType gameObjectType, GameMap gameMap) {
-        this.position = new Vector2(x, y);
-        this.gameObjectType = gameObjectType;
-        this.gameMap = gameMap;
-    }*/
-
     public void create(GameObjectState gameObjectState, GameObjectType gameObjectType, GameMap gameMap) {
         this.position = new Vector2(gameObjectState.getX(), gameObjectState.getY());
         this.gameObjectType = gameObjectType;
@@ -25,9 +19,7 @@ public abstract class GameObject {
     }
 
     public void update(float deltaTime, float gravity) {
-        //float newYPosition = position.y;
-
-        // gravity affects object by updatetime and weight
+        // gravity affects object by update time and weight
         this.velocityY += gravity * deltaTime * getWeight();
         float newYPosition = position.y + this.velocityY * deltaTime;
 
@@ -46,12 +38,11 @@ public abstract class GameObject {
             if ((gameMap.getTileTypeByLocation(1, position.x, newYPosition)) != null) {
                 TileType collidingTileType = gameMap.getTileTypeByLocation(1, position.x, newYPosition);
                 if (collidingTileType.isPortal()) {
-                    if (this instanceof  Player) {
+                    if (this instanceof Player) {
                         ((Player) this).setLevelBeat(true);
                     }
                 }
                 if (collidingTileType.doesKill()) {
-                    //System.out.println("from GameObject: colliding with deadly tile of type " + collidingTileType);
                     if (this instanceof Player) {
                         ((Player) this).damagePlayer(20);
                     }
@@ -125,13 +116,7 @@ public abstract class GameObject {
     }
 
     public boolean isPlayer() {
-        //System.out.println("from isPlayer():" + this.gameObjectType.equals(GameObjectType.PLAYER));
         return this.gameObjectType.equals(GameObjectType.PLAYER);
     }
 
-
-
-  /*  public abstract boolean isCompletelyDead();
-
-    public abstract boolean killEnemy();*/
 }

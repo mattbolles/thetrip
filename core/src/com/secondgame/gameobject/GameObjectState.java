@@ -71,8 +71,7 @@ public class GameObjectState {
             catch (Exception exception) {
                 return defaultValue;
             }
-        }
-        else {
+        } else {
             return defaultValue;
         }
     }
@@ -86,8 +85,7 @@ public class GameObjectState {
             catch (Exception exception) {
                 return defaultValue;
             }
-        }
-        else {
+        } else {
             return defaultValue;
         }
     }
@@ -101,8 +99,7 @@ public class GameObjectState {
             catch (Exception exception) {
                 return defaultValue;
             }
-        }
-        else {
+        } else {
             return defaultValue;
         }
     }
@@ -110,9 +107,7 @@ public class GameObjectState {
     public String getStringFromHashMap(String key, String defaultValue) {
         if (gameObjectData.containsKey(key)) {
             return gameObjectData.get(key);
-        }
-
-        else {
+        } else {
             return defaultValue;
         }
     }

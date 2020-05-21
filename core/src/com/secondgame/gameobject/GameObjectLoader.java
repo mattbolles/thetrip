@@ -22,9 +22,7 @@ public class GameObjectLoader {
                 gameObjects.add(GameObjectType.createObjectFromState(gameObjectState, gameMap));
             }
             return gameObjects;
-        }
-
-        else {
+        } else {
             //saveGameObjects(id, currentGameObjects);
             Gdx.app.error("GameObjectLoader", "Could not load game objects :( from file: " + file);
             //return currentGameObjects;

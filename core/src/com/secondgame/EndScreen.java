@@ -26,7 +26,7 @@ public class EndScreen extends ScreenAdapter {
     public void show() {
         Gdx.input.setInputProcessor(stage1);
         Gdx.input.setInputProcessor(stage2);
-        Label intro1 = new Label("CONGRATULATIONS... YOU WIN", GameInfo.LABEL_STYLE_18);
+        Label intro1 = new Label("YOU WIN", GameInfo.LABEL_STYLE_18);
         intro1.setPosition(Gdx.graphics.getWidth() / 2 - intro1.getWidth() / 2,
                 Gdx.graphics.getHeight() / 2 - intro1.getHeight() / 2);
         stage1.addActor(intro1);

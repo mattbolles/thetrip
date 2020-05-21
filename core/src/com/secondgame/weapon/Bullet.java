@@ -68,7 +68,6 @@ public class Bullet {
         this.hitbox.move(x, y);
 
         // if collides, remove it
-
         if (gameMap.checkIfCollidesWithTiles(newXPosition, y, width, height) == 1) {
             needToRemove = true;
         }

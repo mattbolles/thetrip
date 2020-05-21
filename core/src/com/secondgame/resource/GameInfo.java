@@ -13,8 +13,6 @@ public class GameInfo {
     public static final Label.LabelStyle LABEL_STYLE_36;
     public static final int WORLD_WIDTH = 3840; // 120 tiles (32x32)
     public static final int WORLD_HEIGHT = 960; // 30 tiles
-    /*public static final int SCREEN_WIDTH = 1280; // 40 tiles
-    public static final int SCREEN_HEIGHT = 960; // 30 tiles*/
     public static final int SCREEN_WIDTH = 800; // 40 tiles
     public static final int SCREEN_HEIGHT = 600; // 30 tiles
     public static final int offsetMaxX = WORLD_WIDTH - (SCREEN_WIDTH / 2);

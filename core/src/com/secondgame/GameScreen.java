@@ -127,6 +127,8 @@ public class GameScreen extends ScreenAdapter {
                 game.getOptions().setStartingLevel(level);
                 nextLevel();
             } else {
+                // if final level beaten
+                game.getOptions().setStartingLevel(1);
                 soundPlayer.stopMusic();
                 game.loadScreen(GameState.END_OF_GAME);
             }
@@ -150,11 +152,10 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void processInput() {
-        // E to shoot - add inout handling method later
+        // E to shoot
         // delay shooting
         if (Gdx.input.isKeyPressed(Input.Keys.E) && bulletTimer >= GameInfo.BULLET_COOLDOWN) {
             bulletTimer = 0;
-            System.out.println("from bullet key press, playpos: " + playerPositionX + "," + playerPositionY);
             // facing right
             if ("right".equals(playerDirection)) {
                 bulletList.add(new Bullet(playerPositionX + 20, playerPositionY + 30, "right", camera, gameMap));
@@ -216,7 +217,6 @@ public class GameScreen extends ScreenAdapter {
                 if (gameObject instanceof Enemy) {
                     // if bullet hit enemy
                     if (bullet.getHitbox().checkCollision(((Enemy) gameObject).getHitbox())) {
-                        System.out.println("from gamescreen: bullet hit enemy");
                         bullet.setNeedToRemove(true);
                         ((Enemy) gameObject).damageEnemy(20);
                     }
@@ -225,7 +225,6 @@ public class GameScreen extends ScreenAdapter {
                 if (gameObject instanceof Boss) {
                     // if bullet hit boss
                     if (bullet.getHitbox().checkCollision(((Boss) gameObject).getHitbox())) {
-                        System.out.println("from gamescreen: bullet hit enemy");
                         bullet.setNeedToRemove(true);
                         ((Boss) gameObject).damageBoss(20);
                     }

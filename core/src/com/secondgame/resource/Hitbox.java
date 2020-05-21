@@ -19,12 +19,6 @@ public class Hitbox {
     }
 
     public boolean checkCollision(Hitbox hitboxToCheck) {
-        if ((x < hitboxToCheck.x + hitboxToCheck.width) && (y < hitboxToCheck.y + hitboxToCheck.height) && (x + width > hitboxToCheck.x) && (y + height > hitboxToCheck.y)) {
-            return true;
-        }
-
-        else {
-            return false;
-        }
+        return (x < hitboxToCheck.x + hitboxToCheck.width) && (y < hitboxToCheck.y + hitboxToCheck.height) && (x + width > hitboxToCheck.x) && (y + height > hitboxToCheck.y);
     }
 }
