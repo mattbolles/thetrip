@@ -54,7 +54,7 @@ public class Player extends GameObject {
         this.y = gameObjectState.getY();
         this.width = getWidth();
         this.height = getHeight();
-        this.justKilled = false;
+        this.justKilled = false; //d
         this.hitbox = new Hitbox(x, y, width, height);
         direction = "right";
         playerImage = new Texture("images/player.png");
