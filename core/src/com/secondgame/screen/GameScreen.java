@@ -12,7 +12,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.secondgame.TheTrip;
 import com.secondgame.gameobject.*;
 import com.secondgame.map.GameMap;
 import com.secondgame.map.TiledGameMap;

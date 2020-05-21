@@ -3,7 +3,6 @@ package com.secondgame.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
-import com.secondgame.TheTrip;
 
 public class TitleScreen extends ScreenAdapter {
 

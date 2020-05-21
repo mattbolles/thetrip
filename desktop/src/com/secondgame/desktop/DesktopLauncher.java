@@ -3,7 +3,7 @@ package com.secondgame.desktop;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.secondgame.TheTrip;
+import com.secondgame.screen.TheTrip;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

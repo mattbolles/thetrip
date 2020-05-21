@@ -1,7 +1,6 @@
 package com.secondgame.screen;
 
 import com.badlogic.gdx.ScreenAdapter;
-import com.secondgame.TheTrip;
 import com.secondgame.resource.GameState;
 
 public class LoadingScreen extends ScreenAdapter {
