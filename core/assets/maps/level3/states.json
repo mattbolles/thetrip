@@ -1,0 +1,48 @@
+[
+  {
+    "gameObjectType": "player",
+    "x": 100,
+    "y": 700,
+    "gameObjectData": {
+      "health": 100,
+      "lives": 3
+    }
+  },
+
+  {
+    "gameObjectType": "enemy",
+    "x": 928,
+    "y": 384,
+    "gameObjectData": {
+      "health": 100,
+    }
+  },
+
+  {
+    "gameObjectType": "enemy",
+    "x": 1152,
+    "y": 128,
+    "gameObjectData": {
+      "health": 100,
+    }
+  },
+
+  {
+    "gameObjectType": "enemy",
+    "x": 1856,
+    "y": 288,
+    "gameObjectData": {
+      "health": 100,
+    }
+  },
+
+
+  {
+    "gameObjectType": "boss",
+    "x": 2848,
+    "y": 512,
+    "gameObjectData": {
+      "health": 300,
+    }
+  }
+]

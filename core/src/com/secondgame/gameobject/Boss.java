@@ -9,12 +9,12 @@ import com.secondgame.GameInfo;
 import com.secondgame.GameMap;
 import com.secondgame.Hitbox;
 
-public class Enemy extends GameObject {
+public class Boss extends GameObject {
 
     private static int speed = 180;
     private static int jumpVelocity = 6;
 
-    Texture enemyImage;
+    Texture bossImage;
     Animation<TextureRegion> animation;
 
     Texture moveAnimationSheet;
@@ -52,8 +52,8 @@ public class Enemy extends GameObject {
         this.height = getHeight();
         this.hitbox = new Hitbox(x, y, width, height);
         direction = "right";
-        enemyImage = new Texture("images/enemy1.png");
-        moveAnimationSheet = new Texture(Gdx.files.internal("images/enemyspritesheet.png"));
+        bossImage = new Texture("images/enemy1.png");
+        moveAnimationSheet = new Texture(Gdx.files.internal("images/bossspritesheet.png"));
         System.out.println("moveAnimationSheet width: " + moveAnimationSheet.getWidth() + " height: " + moveAnimationSheet.getHeight());
         TextureRegion[][] tmp = TextureRegion.split(moveAnimationSheet,moveAnimationSheet.getWidth() / FRAME_COLS,
                 moveAnimationSheet.getHeight() / FRAME_ROWS); // 4 col, 1 row

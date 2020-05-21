@@ -75,7 +75,7 @@ public class Player extends GameObject {
         this.health = gameObjectState.getFloatFromHashMap("health", 100);
         this.lives = gameObjectState.getIntFromHashMap("lives", 3);
         completelyDead = false;
-        System.out.println("player health init: " + health);
+        //System.out.println("player health init: " + health);
         // add extra data... spawnradius etc
     }
 

@@ -12,7 +12,9 @@ public enum GameObjectType {
 
     // 30 so can fit through cracks maybe? - change later if doesn't work right
     PLAYER("player", Player.class, 30, 64, 40),
-    ENEMY("enemy", Enemy.class, 64, 64, 100);
+    ENEMY("enemy", Enemy.class, 64, 54, 100),
+    BOSS("boss", Boss.class, 120, 256, 1000);
+
 
     private String id;
     //private Class<? extends GameObject> loaderClass;
