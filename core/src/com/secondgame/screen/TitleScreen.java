@@ -1,16 +1,15 @@
-package com.secondgame;
+package com.secondgame.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.secondgame.TheTrip;
 
 public class TitleScreen extends ScreenAdapter {
 
-    private SecondGame game;
+    private TheTrip game;
 
-    public TitleScreen(SecondGame game) {
+    public TitleScreen(TheTrip game) {
     }
 
     @Override

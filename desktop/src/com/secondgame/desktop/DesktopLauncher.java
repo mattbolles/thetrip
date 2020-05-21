@@ -3,7 +3,7 @@ package com.secondgame.desktop;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.secondgame.SecondGame;
+import com.secondgame.TheTrip;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -19,6 +19,6 @@ public class DesktopLauncher {
 		config.pauseWhenBackground = true;
 		config.pauseWhenMinimized = true;
 		// add in icon later
-		new LwjglApplication(new SecondGame(), config);
+		new LwjglApplication(new TheTrip(), config);
 	}
 }

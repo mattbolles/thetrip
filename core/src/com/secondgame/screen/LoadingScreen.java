@@ -1,12 +1,13 @@
-package com.secondgame;
+package com.secondgame.screen;
 
 import com.badlogic.gdx.ScreenAdapter;
+import com.secondgame.TheTrip;
 import com.secondgame.resource.GameState;
 
 public class LoadingScreen extends ScreenAdapter {
-    private SecondGame game;
+    private TheTrip game;
 
-    public LoadingScreen(SecondGame game) {
+    public LoadingScreen(TheTrip game) {
         this.game = game;
     }
 

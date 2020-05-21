@@ -1,7 +1,4 @@
-package com.secondgame;
-
-import com.badlogic.gdx.math.Vector2;
-import com.secondgame.gameobject.GameObject;
+package com.secondgame.resource;
 
 public class Hitbox {
     float x;

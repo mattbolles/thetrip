@@ -4,17 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.secondgame.SecondGame;
+import com.secondgame.TheTrip;
 
 public class SoundPlayer {
 
-    SecondGame game;
+    TheTrip game;
     public static AssetManager assetManager = new AssetManager();
     private static Music backgroundMusic = null;
     public float volume;
 
 
-    public SoundPlayer(SecondGame game) {
+    public SoundPlayer(TheTrip game) {
         this.game = game;
     }
 

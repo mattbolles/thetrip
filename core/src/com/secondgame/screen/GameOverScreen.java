@@ -1,4 +1,4 @@
-package com.secondgame;
+package com.secondgame.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -8,14 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.secondgame.TheTrip;
 import com.secondgame.resource.GameInfo;
 import com.secondgame.resource.GameState;
 
 public class GameOverScreen extends ScreenAdapter {
-    private SecondGame game;
+    private TheTrip game;
     private Stage stage;
 
-    public GameOverScreen(SecondGame game) {
+    public GameOverScreen(TheTrip game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
 

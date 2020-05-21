@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.secondgame.map.GameMap;
-import com.secondgame.Hitbox;
+import com.secondgame.resource.Hitbox;
 
 public class Bullet {
 

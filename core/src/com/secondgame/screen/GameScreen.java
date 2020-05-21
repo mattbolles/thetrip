@@ -1,4 +1,4 @@
-package com.secondgame;
+package com.secondgame.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.secondgame.TheTrip;
 import com.secondgame.gameobject.*;
 import com.secondgame.map.GameMap;
 import com.secondgame.map.TiledGameMap;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 
 public class GameScreen extends ScreenAdapter {
 
-    final SecondGame game;
+    final TheTrip game;
     private Stage stage;
     SpriteBatch spriteBatch;
     OrthographicCamera camera;
@@ -57,7 +58,7 @@ public class GameScreen extends ScreenAdapter {
 
 
     // collisions not working - tiles all come back as null
-    public GameScreen(final SecondGame game) {
+    public GameScreen(final TheTrip game) {
         levelBeat = false;
         this.game = game;
         this.justReset = false;

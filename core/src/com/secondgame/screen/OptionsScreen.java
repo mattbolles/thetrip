@@ -1,4 +1,4 @@
-package com.secondgame;
+package com.secondgame.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -10,10 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.secondgame.TheTrip;
 import com.secondgame.resource.GameState;
 
 public class OptionsScreen extends ScreenAdapter {
-    private SecondGame game;
+    private TheTrip game;
     private Stage stage;
     private Label titleLabel;
     private Label musicVolumeLabel;
@@ -23,7 +24,7 @@ public class OptionsScreen extends ScreenAdapter {
 
 
 
-    public OptionsScreen(SecondGame game) {
+    public OptionsScreen(TheTrip game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
 
