@@ -25,6 +25,7 @@ public class GameInfo {
     public static final int PLAYER_HEIGHT = 64;
     public static final float ANIMATION_SPEED = 0.5f;
     public static final float BULLET_COOLDOWN = 0.25f;
+    public static final float DAMAGE_COOLDOWN = 0.4f;
 
 
     static {

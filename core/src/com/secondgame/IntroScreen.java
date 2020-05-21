@@ -43,13 +43,13 @@ public class IntroScreen extends ScreenAdapter {
         System.out.println("timer: " + timer);
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //skip intro if any key pressed
+        //skip intro if any key pressed or mouse clicked
         if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
             game.loadScreen(GameState.MENU);
         }
+
         if (timer < 250) {
             stage1.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-            // draw appropriate items
             stage1.draw();
         }
         if (timer > 250) {
@@ -57,7 +57,6 @@ public class IntroScreen extends ScreenAdapter {
 
             if (timer < 500) {
                 stage2.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-                // draw appropriate items
                 stage2.draw();
             }
         }
@@ -65,9 +64,7 @@ public class IntroScreen extends ScreenAdapter {
             stage2.clear();
             game.loadScreen(GameState.MENU);
         }
-        /*if (timer > 600) {
-            game.loadScreen(GameState.MENU);
-        }*/
+
     }
 
     @Override

@@ -24,7 +24,6 @@ public class SecondGame extends Game {
     private GameOverScreen gameOverScreen;
     private MenuScreen menuScreen;
     private GameScreen gameScreen;
-    private TheTrip theTrip;
 
     SpriteBatch batch;
     ShapeRenderer shapeRenderer;
@@ -119,12 +118,6 @@ public class SecondGame extends Game {
                 this.setScreen(gameScreen);
                 break;
 
-            /*case "gamescreen":
-                if (theTrip == null) {
-                    theTrip = new TheTrip(this);
-                }
-                theTrip();
-                break;*/
 
         }
     }

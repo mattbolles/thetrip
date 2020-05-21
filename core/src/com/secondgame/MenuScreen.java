@@ -70,7 +70,7 @@ public class MenuScreen extends ScreenAdapter {
         startButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.loadScreen(GameState.GAME);
+                game.setScreen(new GameScreen(game));
             }
         });
 

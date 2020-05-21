@@ -47,16 +47,18 @@ public class GameScreen extends ScreenAdapter {
     boolean justReset;
     ArrayList<Bullet> bulletList;
     float bulletTimer;
+    float damageTimer;
     String playerDirection;
     boolean levelBeat;
 
 
     // collisions not working - tiles all come back as null
     public GameScreen(final SecondGame game) {
-        this.levelBeat = false;
+        levelBeat = false;
         this.game = game;
         this.justReset = false;
         bulletTimer = 0;
+        damageTimer = 0;
         bulletList = new ArrayList<Bullet>();
         spriteBatch = game.batch;
         shapeRenderer = new ShapeRenderer();
@@ -107,11 +109,24 @@ public class GameScreen extends ScreenAdapter {
         //spriteBatch.end();
         // update in relation to player object
         bulletTimer += delta;
+        damageTimer += delta;
         ArrayList<Enemy> enemyToKill = new ArrayList<Enemy>();
         for (GameObject gameObject : gameMap.gameObjects) {
             // align camera with player object
 
             if (gameObject instanceof Player) {
+                // if there are other objects besides player, check collisions
+                if (gameMap.gameObjects.size() > 1) {
+                    for (GameObject anotherGameObject : gameMap.gameObjects) {
+                        // if collide with enemy
+                        if (anotherGameObject instanceof Enemy) {
+                            if (((Player) gameObject).getHitbox().checkCollision(((Enemy) anotherGameObject).getHitbox())) {
+                                ((Player) gameObject).damagePlayer(5);
+                            }
+                        }
+                    }
+                }
+
                 // if respawning, reset health etc
                 if (justReset) {
                     ((Player) gameObject).revivePlayer();
@@ -148,6 +163,8 @@ public class GameScreen extends ScreenAdapter {
                 }
             }
 
+
+
         }
         gameMap.gameObjects.removeAll(enemyToKill);
 
@@ -155,7 +172,7 @@ public class GameScreen extends ScreenAdapter {
 
         // E to shoot - add inout handling method later
         // delay shooting
-        if (Gdx.input.isKeyPressed(Input.Keys.E) && bulletTimer >= GameInfo.BULLET_COOLDOWN) {
+        /*if (Gdx.input.isKeyPressed(Input.Keys.E) && bulletTimer >= GameInfo.BULLET_COOLDOWN) {
             bulletTimer = 0;
             System.out.println("from bullet key press, playpos: " + playerPositionX + "," + playerPositionY);
             // facing right
@@ -168,7 +185,8 @@ public class GameScreen extends ScreenAdapter {
                 bulletList.add(new Bullet(playerPositionX - 5, playerPositionY + 30, "left", camera, gameMap));
             }
 
-        }
+        }*/
+        processInput();
 
 
         // update bullets
@@ -193,22 +211,23 @@ public class GameScreen extends ScreenAdapter {
             // if actually dead
             if (!(playerLives > 0)) {
                 justReset = true;
+                soundPlayer.stopMusic();
                 game.loadScreen(GameState.GAME_OVER);
+                //this.dispose();
             }
         }
 
         // if level beaten
         if (levelBeat) {
             System.out.println("level beat reached in GameScreen");
-            if (level < 2) {
+            if (level < 3) {
                 level++;
                 game.getOptions().setStartingLevel(level);
                 nextLevel();
             }
 
             else {
-                System.out.println("game over reached in gamescreen");
-                game.loadScreen(GameState.END_OF_GAME);
+                System.out.println("game finish reached in gamescreen");
             }
         }
         stateTime += delta;
@@ -300,6 +319,31 @@ public class GameScreen extends ScreenAdapter {
         shapeRenderer.end();
     }
 
+    public void processInput() {
+        // E to shoot - add inout handling method later
+        // delay shooting
+        if (Gdx.input.isKeyPressed(Input.Keys.E) && bulletTimer >= GameInfo.BULLET_COOLDOWN) {
+            bulletTimer = 0;
+            System.out.println("from bullet key press, playpos: " + playerPositionX + "," + playerPositionY);
+            // facing right
+            if ("right".equals(playerDirection)) {
+                bulletList.add(new Bullet(playerPositionX + 20, playerPositionY + 30, "right", camera, gameMap));
+            }
+
+            //facing left
+            else {
+                bulletList.add(new Bullet(playerPositionX - 5, playerPositionY + 30, "left", camera, gameMap));
+            }
+
+        }
+
+        // quit to menu
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            soundPlayer.stopMusic();
+            game.loadScreen(GameState.MENU);
+        }
+    }
+
     public void updateCamera() {
         if (playerPositionX > camera.position.x) {
             camera.position.x = playerPositionX;
@@ -337,8 +381,10 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void nextLevel() {
+        soundPlayer.stopMusic();
         game.setScreen(new GameScreen(game));
-        this.dispose();
+        //this.dispose();
+        System.out.println("Gamescreen: next level reached");
     }
 
     @Override
@@ -346,6 +392,7 @@ public class GameScreen extends ScreenAdapter {
         spriteBatch.dispose();
         gameMap.dispose();
         soundPlayer.stopMusic();
+        //SoundPlayer.disposeSounds();
         super.dispose();
     }
 }

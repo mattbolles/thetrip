@@ -32,7 +32,7 @@ public abstract class GameObject {
         float newYPosition = position.y + this.velocityY * deltaTime;
 
         // if collision happens with map
-        if (gameMap.checkIfCollidesWithTiles(position.x, newYPosition, getWidth(), getHeight())) {
+        if (gameMap.checkIfCollidesWithTiles(position.x, newYPosition, getWidth(), getHeight()) == 1) {
             // if hit ground
             if (velocityY < 0) {
                 // put to nearest bottom of floor
@@ -74,7 +74,7 @@ public abstract class GameObject {
     protected void moveX(float amountToMove) {
         float newXPosition = this.position.x + amountToMove;
         // only move if no collision
-        if (!gameMap.checkIfCollidesWithTiles(newXPosition, position.y, getWidth(), getWidth())) {
+        if (gameMap.checkIfCollidesWithTiles(newXPosition, position.y, getWidth(), getWidth()) != 1) {
             this.position.x = newXPosition;
         }
     }

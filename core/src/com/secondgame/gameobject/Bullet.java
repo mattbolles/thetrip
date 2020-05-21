@@ -70,15 +70,15 @@ public class Bullet {
         }
 
         // if does not collide, move to new position
-        if (!gameMap.checkIfCollidesWithTiles(newXPosition, y, width, height)) {
+        if (gameMap.checkIfCollidesWithTiles(newXPosition, y, width, height) != 1) {
             x = newXPosition;
         }
 
-        hitbox.move(x, y);
+        this.hitbox.move(x, y);
 
         // if collides, remove it
 
-        if (gameMap.checkIfCollidesWithTiles(newXPosition, y, width, height)) {
+        if (gameMap.checkIfCollidesWithTiles(newXPosition, y, width, height) == 1) {
             needToRemove = true;
         }
         // if goes out of bounds of screen

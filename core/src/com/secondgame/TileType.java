@@ -15,7 +15,7 @@ public enum TileType {
     LEVEL_3_BACKGROUND(3, false, false, "level3bg"),
     BLACK_BLOCK(4, true, false, "blackblock"),
     SPIKE(5, true, true, "spike"),
-    PORTAL(6, true, false, "portal");
+    PORTAL(6, false, false, "portal");
 
     public static final int TILE_SIZE = 32;
 
@@ -49,6 +49,7 @@ public enum TileType {
     }
 
     public boolean isPortal() {
+        //System.out.println("TileType: isPortal reached");
         return this.id == 6;
     }
 

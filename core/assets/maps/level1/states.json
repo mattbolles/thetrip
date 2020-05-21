@@ -11,7 +11,7 @@
 
   {
     "gameObjectType": "enemy",
-    "x": 832,
+    "x": 800,
     "y": 352,
     "gameObjectData": {
       "health": 100,

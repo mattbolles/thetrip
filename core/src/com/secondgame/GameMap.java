@@ -53,11 +53,12 @@ public abstract class GameMap {
      */
     public abstract TileType getTileTypeByCoordinate(int layer, int col, int row);
 
-    public boolean checkIfCollidesWithTiles(float x, float y, int width, int height) {
+    public int checkIfCollidesWithTiles(float x, float y, int width, int height) {
+        // return - 0 if not collidable, 1 if collidable, 2 if portal
         // check if object collides with with any of the tiles it overlaps - return true if collision happens
         // check borders
         if (checkBorders(x, y, width, height)) {
-            return true;
+            return 1;
         }
 
         // start in bottom left tile
@@ -77,15 +78,19 @@ public abstract class GameMap {
                     //System.out.println("from GameMap, checkIfCollidesWithTiles, layer " + layer + " row " + row + " col " +
                     // column);
                     TileType currentTileType = getTileTypeByCoordinate(layer, column, row);
+                    if (currentTileType != null && currentTileType.isPortal()) {
+                        //System.out.println("from GameMap: checkIfTilesCollideWithMap portal branch reached");
+                        return 2;
+                    }
                     //System.out.println("from GameMap, checkIfCollidesWithTiles, currentTileType: " + currentTileType);
                     if (currentTileType != null && currentTileType.isCollidable()) {
-                        return true;
+                        return 1;
                     }
                 }
             }
         }
 
-        return false;
+        return 0;
     }
 
     public boolean checkBorders(float x, float y, int width, int height) {

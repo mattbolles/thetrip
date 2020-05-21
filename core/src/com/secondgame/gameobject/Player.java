@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.secondgame.GameInfo;
 import com.secondgame.GameMap;
+import com.secondgame.Hitbox;
 
 public class Player extends GameObject {
 
@@ -32,6 +33,11 @@ public class Player extends GameObject {
     float spawnY;
     boolean justKilled;
     boolean levelBeat;
+    Hitbox hitbox;
+    float x;
+    float y;
+    int width;
+    int height;
 
 
     /*public Player(float x, float y, GameMap gameMap) {
@@ -43,9 +49,14 @@ public class Player extends GameObject {
     public void create(GameObjectState gameObjectState, GameObjectType gameObjectType, GameMap gameMap) {
         super.create(gameObjectState, gameObjectType, gameMap);
         this.levelBeat = false;
-        this.spawnX = 40;
-        this.spawnY = 320;
+        this.spawnX = gameObjectState.x;
+        this.spawnY = gameObjectState.y;
+        this.x = gameObjectState.getX();
+        this.y = gameObjectState.getY();
+        this.width = getWidth();
+        this.height = getHeight();
         this.justKilled = false;
+        this.hitbox = new Hitbox(x, y, width, height);
         direction = "right";
         playerImage = new Texture("images/player.png");
         moveAnimationSheet = new Texture(Gdx.files.internal("images/playerspritesheet.png"));
@@ -95,8 +106,14 @@ public class Player extends GameObject {
             this.velocityY += jumpVelocity * getWeight() * deltaTime;
         }
 
+
+
         // applies gravity
         super.update(deltaTime, gravity);
+        this.hitbox.move(this.getX(), this.getY());
+
+        //if a portal is touched
+
 
         //move left
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
@@ -110,8 +127,16 @@ public class Player extends GameObject {
             direction = "right";
         }
 
+        if (this.health <= 0) {
+            killPlayer();
+        }
+
         if (lives == 0) {
             completelyDead = true;
+        }
+
+        if (gameMap.checkIfCollidesWithTiles(this.getX(), this.getY(), width, height) == 2) {
+            levelBeat = true;
         }
         //System.out.println("player health: " + health);
     }
@@ -136,6 +161,7 @@ public class Player extends GameObject {
         this.lives = 3;
         this.setX(spawnX);
         this.setY(spawnY);
+        this.levelBeat = false;
         System.out.println("after revive, health: " + health + " lives: " + lives);
         //this.position.set(spawnX, spawnY);
     }
@@ -147,6 +173,7 @@ public class Player extends GameObject {
     }
 
     public void setLevelBeat(boolean levelBeat) {
+        System.out.println("from Player: setLevelBeat reached, set to: " + levelBeat);
         this.levelBeat = levelBeat;
     }
 
@@ -215,9 +242,7 @@ public class Player extends GameObject {
         else if ("right".equals(direction)) {
             currentFrame = rightAnimation.getKeyFrame(stateTime, true);
         }
-        if (this.health <= 0) {
-            killPlayer();
-        }
+
 
         // last two fields scale image if not correct size
         batch.draw(currentFrame, position.x, position.y, getWidth(), getHeight());
@@ -228,5 +253,9 @@ public class Player extends GameObject {
         GameObjectState gameObjectState = super.getSaveGameObjectState();
         //update extra data here if needed
         return gameObjectState;
+    }
+
+    public Hitbox getHitbox() {
+        return hitbox;
     }
 }

@@ -61,7 +61,8 @@ public class GameOverScreen extends ScreenAdapter {
         retryButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.loadScreen(GameState.GAME);
+                game.setScreen(new GameScreen(game));
+                //game.loadScreen(GameState.GAME);
             }
         });
 
