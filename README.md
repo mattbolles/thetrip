@@ -1,10 +1,11 @@
-# csc413-SecondGame
+# The Trip
 
-## Student Name  : Matt Bolles
-## Student ID    : 913249017 Ultimate 2019.3
+## Basic 2d platformer made as my term project for my software development class. Uses LibGDX.
+## IDE used: IDEA IntelliJ Ultimate 2019.3
 ## Java version: 8
 
 ## [Link to Jar (exceeds Github file size limit)](https://www.dropbox.com/s/lfkidxll84tli4w/TheTrip.jar?dl=0)
+
 
 ## Controls
 - Esc to exit game to menu
